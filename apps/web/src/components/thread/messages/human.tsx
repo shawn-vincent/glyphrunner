@@ -5,6 +5,7 @@ import { getContentString } from "../utils";
 import { cn } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
 import { BranchSwitcher, CommandBar } from "./shared";
+import { MessageBubble } from "./message-bubble";
 
 function EditableContent({
   value,
@@ -47,6 +48,13 @@ export function HumanMessage({
   const [value, setValue] = useState("");
   const contentString = getContentString(message.content);
 
+  // Get current time for timestamp (since message doesn't have created_at)
+  const timestamp = new Date().toLocaleTimeString([], { 
+    hour: 'numeric', 
+    minute: '2-digit',
+    hour12: true 
+  }).toLowerCase().replace(' ', '');
+
   const handleSubmitEdit = () => {
     setIsEditing(false);
 
@@ -69,31 +77,26 @@ export function HumanMessage({
     );
   };
 
-  return (
-    <div
-      className={cn(
-        "flex items-center ml-auto gap-2 group",
-        isEditing && "w-full max-w-xl",
-      )}
-    >
-      <div className={cn("flex flex-col gap-2", isEditing && "w-full")}>
-        {isEditing ? (
-          <EditableContent
-            value={value}
-            setValue={setValue}
-            onSubmit={handleSubmitEdit}
-          />
-        ) : (
-          <p className="px-4 py-2 rounded-3xl bg-muted w-fit ml-auto whitespace-pre-wrap">
-            {contentString}
-          </p>
-        )}
-
+  if (isEditing) {
+    return (
+      <div className={cn("flex flex-col items-end ml-auto gap-1 group ml-8 w-full max-w-xl")}>
+        {/* User pill and timestamp for editing mode */}
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-muted-foreground">{timestamp}</span>
+          <div className="inline-flex items-center px-2 py-1 rounded-full border-2 border-user-bubble-border bg-user-bubble">
+            <span className="text-xs font-medium text-foreground">user</span>
+          </div>
+        </div>
+        
+        <EditableContent
+          value={value}
+          setValue={setValue}
+          onSubmit={handleSubmitEdit}
+        />
+        
         <div
           className={cn(
-            "flex gap-2 items-center ml-auto transition-opacity",
-            "opacity-0 group-focus-within:opacity-100 group-hover:opacity-100",
-            isEditing && "opacity-100",
+            "flex gap-2 items-center ml-auto transition-opacity opacity-100",
           )}
         >
           <BranchSwitcher
@@ -116,6 +119,43 @@ export function HumanMessage({
             isHumanMessage={true}
           />
         </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col gap-2">
+      <MessageBubble
+        type="user"
+        content={contentString}
+        timestamp={timestamp}
+      />
+      
+      <div
+        className={cn(
+          "flex gap-2 items-center ml-auto mr-8 transition-opacity",
+          "opacity-0 group-focus-within:opacity-100 group-hover:opacity-100",
+        )}
+      >
+        <BranchSwitcher
+          branch={meta?.branch}
+          branchOptions={meta?.branchOptions}
+          onSelect={(branch) => thread.setBranch(branch)}
+          isLoading={isLoading}
+        />
+        <CommandBar
+          isLoading={isLoading}
+          content={contentString}
+          isEditing={isEditing}
+          setIsEditing={(c) => {
+            if (c) {
+              setValue(contentString);
+            }
+            setIsEditing(c);
+          }}
+          handleSubmitEdit={handleSubmitEdit}
+          isHumanMessage={true}
+        />
       </div>
     </div>
   );

@@ -13,6 +13,7 @@ import { isAgentInboxInterruptSchema } from "@/lib/agent-inbox-interrupt";
 import { ThreadView } from "../agent-inbox";
 import { useQueryState, parseAsBoolean } from "nuqs";
 import { GenericInterruptView } from "./generic-interrupt";
+import { MessageBubble } from "./message-bubble";
 
 function CustomComponent({
   message,
@@ -112,61 +113,75 @@ export function AssistantMessage({
     return null;
   }
 
-  return (
-    <div className="flex items-start mr-auto gap-2 group">
-      {isToolResult ? (
+  // Get current time for timestamp
+  const timestamp = new Date().toLocaleTimeString([], { 
+    hour: 'numeric', 
+    minute: '2-digit',
+    hour12: true 
+  }).toLowerCase().replace(' ', '');
+
+  if (isToolResult) {
+    return (
+      <div className="flex items-start mr-auto gap-2 group">
         <ToolResult message={message} />
-      ) : (
-        <div className="flex flex-col gap-2">
-          {contentString.length > 0 && (
-            <div className="py-1">
-              <MarkdownText>{contentString}</MarkdownText>
-            </div>
-          )}
+      </div>
+    );
+  }
 
-          {!hideToolCalls && (
-            <>
-              {(hasToolCalls && toolCallsHaveContents && (
-                <ToolCalls toolCalls={message.tool_calls} />
-              )) ||
-                (hasAnthropicToolCalls && (
-                  <ToolCalls toolCalls={anthropicStreamedToolCalls} />
-                )) ||
-                (hasToolCalls && <ToolCalls toolCalls={message.tool_calls} />)}
-            </>
-          )}
+  return (
+    <div className="flex flex-col gap-2">
+      {contentString.length > 0 && (
+        <MessageBubble
+          type="assistant"
+          content={<MarkdownText>{contentString}</MarkdownText>}
+          timestamp={timestamp}
+        />
+      )}
 
-          {message && <CustomComponent message={message} thread={thread} />}
-          {isAgentInboxInterruptSchema(threadInterrupt?.value) &&
-            (isLastMessage || hasNoAIOrToolMessages) && (
-              <ThreadView interrupt={threadInterrupt.value} />
-            )}
-          {threadInterrupt?.value &&
-          !isAgentInboxInterruptSchema(threadInterrupt.value) &&
-          isLastMessage ? (
-            <GenericInterruptView interrupt={threadInterrupt.value} />
-          ) : null}
-          <div
-            className={cn(
-              "flex gap-2 items-center mr-auto transition-opacity",
-              "opacity-0 group-focus-within:opacity-100 group-hover:opacity-100",
-            )}
-          >
-            <BranchSwitcher
-              branch={meta?.branch}
-              branchOptions={meta?.branchOptions}
-              onSelect={(branch) => thread.setBranch(branch)}
-              isLoading={isLoading}
-            />
-            <CommandBar
-              content={contentString}
-              isLoading={isLoading}
-              isAiMessage={true}
-              handleRegenerate={() => handleRegenerate(parentCheckpoint)}
-            />
-          </div>
+      {!hideToolCalls && (
+        <div className="mr-8">
+          {(hasToolCalls && toolCallsHaveContents && (
+            <ToolCalls toolCalls={message.tool_calls} />
+          )) ||
+            (hasAnthropicToolCalls && (
+              <ToolCalls toolCalls={anthropicStreamedToolCalls} />
+            )) ||
+            (hasToolCalls && <ToolCalls toolCalls={message.tool_calls} />)}
         </div>
       )}
+
+      {message && <CustomComponent message={message} thread={thread} />}
+      
+      {isAgentInboxInterruptSchema(threadInterrupt?.value) &&
+        (isLastMessage || hasNoAIOrToolMessages) && (
+          <ThreadView interrupt={threadInterrupt.value} />
+        )}
+        
+      {threadInterrupt?.value &&
+      !isAgentInboxInterruptSchema(threadInterrupt.value) &&
+      isLastMessage ? (
+        <GenericInterruptView interrupt={threadInterrupt.value} />
+      ) : null}
+      
+      <div
+        className={cn(
+          "flex gap-2 items-center mr-8 transition-opacity",
+          "opacity-0 group-focus-within:opacity-100 group-hover:opacity-100",
+        )}
+      >
+        <BranchSwitcher
+          branch={meta?.branch}
+          branchOptions={meta?.branchOptions}
+          onSelect={(branch) => thread.setBranch(branch)}
+          isLoading={isLoading}
+        />
+        <CommandBar
+          content={contentString}
+          isLoading={isLoading}
+          isAiMessage={true}
+          handleRegenerate={() => handleRegenerate(parentCheckpoint)}
+        />
+      </div>
     </div>
   );
 }
