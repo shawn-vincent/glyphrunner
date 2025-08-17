@@ -15,7 +15,7 @@ export function ensureConfiguration(config?: LangGraphRunnableConfig) {
   const configurable = config?.configurable || {};
   return {
     userId: configurable?.userId || "default",
-    model: configurable?.model || "anthropic/claude-3-7-sonnet-latest",
+    model: configurable?.model || "openrouter/openai/gpt-oss-20b:free", // Free default model via OpenRouter
     systemPrompt: configurable?.systemPrompt || SYSTEM_PROMPT,
   };
 }

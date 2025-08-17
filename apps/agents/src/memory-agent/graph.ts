@@ -14,11 +14,15 @@ import {
 } from "./configuration.js";
 import { GraphAnnotation } from "./state.js";
 import { getStoreFromConfigOrThrow, splitModelAndProvider } from "./utils.js";
+import { configureOpenRouterEnvironment } from "../shared/openrouter-config.js";
 
 async function callModel(
   state: typeof GraphAnnotation.State,
   config: LangGraphRunnableConfig,
 ): Promise<{ messages: BaseMessage[] }> {
+  // Configure OpenRouter environment if needed
+  configureOpenRouterEnvironment();
+  
   const llm = await initChatModel();
   const store = getStoreFromConfigOrThrow(config);
   const configurable = ensureConfiguration(config);

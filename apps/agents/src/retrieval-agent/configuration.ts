@@ -108,9 +108,9 @@ export function ensureConfiguration(
       configurable.responseSystemPromptTemplate ||
       RESPONSE_SYSTEM_PROMPT_TEMPLATE,
     responseModel:
-      configurable.responseModel || "anthropic/claude-3-7-sonnet-latest",
+      configurable.responseModel || "openrouter/openai/gpt-oss-20b:free",
     querySystemPromptTemplate:
       configurable.querySystemPromptTemplate || QUERY_SYSTEM_PROMPT_TEMPLATE,
-    queryModel: configurable.queryModel || "anthropic/claude-3-5-haiku-latest",
+    queryModel: configurable.queryModel || "openrouter/openai/gpt-oss-20b:free",
   };
 }

@@ -27,6 +27,6 @@ export function ensureConfiguration(
   return {
     systemPromptTemplate:
       configurable.systemPromptTemplate ?? SYSTEM_PROMPT_TEMPLATE,
-    model: configurable.model ?? "claude-3-7-sonnet-latest",
+    model: configurable.model ?? "openrouter/openai/gpt-oss-20b:free", // Free default model via OpenRouter
   };
 }
