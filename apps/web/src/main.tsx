@@ -6,16 +6,19 @@ import { ThreadProvider } from "./providers/Thread.tsx";
 import { Toaster } from "@/components/ui/sonner";
 import { NuqsAdapter } from "nuqs/adapters/react-router/v6";
 import { BrowserRouter } from "react-router-dom";
+import { ThemeProvider } from "next-themes";
 
 createRoot(document.getElementById("root")!).render(
   <BrowserRouter>
     <NuqsAdapter>
-      <ThreadProvider>
-        <StreamProvider>
-          <App />
-        </StreamProvider>
-      </ThreadProvider>
-      <Toaster />
+      <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+        <ThreadProvider>
+          <StreamProvider>
+            <App />
+          </StreamProvider>
+        </ThreadProvider>
+        <Toaster />
+      </ThemeProvider>
     </NuqsAdapter>
   </BrowserRouter>,
 );

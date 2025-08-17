@@ -6,7 +6,7 @@
     "apps/*"
   ],
   "scripts": {
-    "dev": "concurrently \"turbo dev --filter=web\" \"turbo dev --filter=agents\"",
+    "dev": "concurrently --names \"WEB,LLM\" --prefix-colors \"cyan,magenta\" \"turbo dev --filter=web\" \"turbo dev --filter=agents\"",
     "build": "turbo build",
     "turbo:command": "turbo",
     "format": "turbo format",

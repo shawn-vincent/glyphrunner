@@ -35,6 +35,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "../ui/tooltip";
+import { ThemeToggle } from "../ui/theme-toggle";
 
 function StickyToBottomContent(props: {
   content: ReactNode;
@@ -264,7 +265,8 @@ export function Thread() {
                 </Button>
               )}
             </div>
-            <div className="absolute top-2 right-4 flex items-center">
+            <div className="absolute top-2 right-4 flex items-center gap-2">
+              <ThemeToggle />
               <OpenGitHubRepo />
             </div>
           </div>
@@ -301,13 +303,14 @@ export function Thread() {
               >
                 <LangGraphLogoSVG width={32} height={32} />
                 <span className="text-xl font-semibold tracking-tight">
-                  Agent Chat
+                  glyphrunner.ai
                 </span>
               </motion.button>
             </div>
 
             <div className="flex items-center gap-4">
-              <div className="flex items-center">
+              <div className="flex items-center gap-2">
+                <ThemeToggle />
                 <OpenGitHubRepo />
               </div>
               <TooltipIconButton
@@ -374,7 +377,7 @@ export function Thread() {
                   <div className="flex gap-3 items-center">
                     <LangGraphLogoSVG className="flex-shrink-0 h-8" />
                     <h1 className="text-2xl font-semibold tracking-tight">
-                      Agent Chat
+                      glyphrunner.ai
                     </h1>
                   </div>
                 )}

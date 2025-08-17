@@ -28,6 +28,7 @@ GlyphRunner is a **monorepo with dual architecture**:
 - **Configuration**: Defined in `langgraph.json` with 5 different graph endpoints
 - **State Management**: Each agent uses LangGraph's state management with typed annotations
 - **Tools**: Agents can use external APIs (Tavily search, etc.) and custom tool implementations
+- **Model Support**: Native support for Anthropic, OpenAI, and OpenRouter (100+ models)
 
 ### Frontend: React Web App (`apps/web/`)
 - **Framework**: React 19 + Vite + TypeScript
@@ -79,6 +80,9 @@ ANTHROPIC_API_KEY=your-anthropic-key
 OPENAI_API_KEY=your-openai-key  
 TAVILY_API_KEY=your-tavily-key
 
+# OpenRouter support (provides access to 100+ models)
+OPENROUTER_API_KEY=your-openrouter-key
+
 # Optional for specific agents
 PINECONE_API_KEY=your-pinecone-key
 MONGODB_URI=your-mongodb-uri
@@ -87,9 +91,25 @@ MONGODB_URI=your-mongodb-uri
 ## Agent Configuration
 
 Agents are configured via `langgraph.json` and support model switching:
-- Default model: `anthropic/claude-3-7-sonnet-latest`
+- Default model: `openrouter/openai/gpt-oss-20b:free` (free model via OpenRouter)
 - Configurable via LangGraph Studio or runtime configuration
 - Each agent has specific prompts and tool configurations in their respective directories
+
+### Supported Model Providers
+
+**Direct Providers:**
+- `anthropic/claude-3-7-sonnet-latest` - Anthropic models
+- `openai/gpt-4o` - OpenAI models
+
+**OpenRouter (100+ models):**
+- `openrouter/openai/gpt-oss-20b:free` - Free model (default)
+- `openrouter/anthropic/claude-3-7-sonnet` - Anthropic via OpenRouter
+- `openrouter/openai/gpt-4o` - OpenAI via OpenRouter  
+- `openrouter/meta-llama/llama-3.2-90b-instruct` - Meta Llama models
+- `openrouter/google/gemini-pro` - Google models
+- `openrouter/mistralai/mistral-7b-instruct` - Mistral models
+
+OpenRouter provides unified access to models from multiple providers with competitive pricing and reliability.
 
 ## Development Workflow
 
