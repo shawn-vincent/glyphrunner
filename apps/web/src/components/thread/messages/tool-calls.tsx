@@ -75,10 +75,12 @@ export function ToolCallWithResult({
                       {key}:
                     </td>
                     <td className="px-3 py-2 text-sm text-muted-foreground align-top text-left">
-                      <div className="bg-background rounded border border-border overflow-hidden">
-                        <JsonHighlighter>
-                          {isComplexValue(value) ? JSON.stringify(value, null, 2) : JSON.stringify(value)}
-                        </JsonHighlighter>
+                      <div className="relative">
+                        <div className="bg-background rounded border border-border overflow-x-auto max-w-md scrollbar-thin scrollbar-track-transparent scrollbar-thumb-border scroll-shadows">
+                          <JsonHighlighter>
+                            {isComplexValue(value) ? JSON.stringify(value, null, 2) : JSON.stringify(value)}
+                          </JsonHighlighter>
+                        </div>
                       </div>
                     </td>
                   </tr>
@@ -130,10 +132,12 @@ export function ToolCallWithResult({
                                 {key}:
                               </td>
                               <td className="px-3 py-2 text-sm text-muted-foreground align-top text-left">
-                                <div className="bg-background rounded border border-border overflow-hidden">
-                                  <JsonHighlighter>
-                                    {isComplexValue(value) ? JSON.stringify(value, null, 2) : JSON.stringify(value)}
-                                  </JsonHighlighter>
+                                <div className="relative">
+                                  <div className="bg-background rounded border border-border overflow-x-auto max-w-md scrollbar-thin scrollbar-track-transparent scrollbar-thumb-border scroll-shadows">
+                                    <JsonHighlighter>
+                                      {isComplexValue(value) ? JSON.stringify(value, null, 2) : JSON.stringify(value)}
+                                    </JsonHighlighter>
+                                  </div>
                                 </div>
                               </td>
                             </tr>
@@ -143,10 +147,12 @@ export function ToolCallWithResult({
                     </table>
                   </div>
                 ) : (
-                  <div className="bg-background rounded border border-border overflow-hidden">
-                    <JsonHighlighter>
-                      {displayedResult}
-                    </JsonHighlighter>
+                  <div className="relative">
+                    <div className="bg-background rounded border border-border overflow-x-auto max-w-full scrollbar-thin scrollbar-track-transparent scrollbar-thumb-border scroll-shadows">
+                      <JsonHighlighter>
+                        {displayedResult}
+                      </JsonHighlighter>
+                    </div>
                   </div>
                 )}
               </motion.div>

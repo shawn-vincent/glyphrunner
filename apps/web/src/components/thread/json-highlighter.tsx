@@ -20,10 +20,12 @@ export const JsonHighlighter: FC<{ children: string; className?: string }> = ({
         fontSize: "0.875rem",
         background: "transparent",
         fontFamily: 'ui-monospace, SFMono-Regular, "SF Mono", Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+        whiteSpace: 'pre',
+        overflowX: 'auto',
       }}
       className={className}
-      wrapLines={true}
-      wrapLongLines={true}
+      wrapLines={false}
+      wrapLongLines={false}
     >
       {children}
     </SyntaxHighlighter>
