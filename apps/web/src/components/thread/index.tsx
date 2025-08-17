@@ -16,6 +16,7 @@ import { LangGraphLogoSVG } from "../icons/langgraph";
 import { TooltipIconButton } from "./tooltip-icon-button";
 import {
   ArrowDown,
+  ArrowDownToLine,
   LoaderCircle,
   PanelRightOpen,
   PanelRightClose,
@@ -58,12 +59,15 @@ function ScrollToBottom(props: { className?: string }) {
   if (isAtBottom) return null;
   return (
     <Button
-      variant="outline"
-      className={props.className}
+      variant="ghost"
+      size="icon"
+      className={cn(
+        "rounded-full w-12 h-12 shadow-lg hover:shadow-xl transition-all duration-200",
+        props.className
+      )}
       onClick={() => scrollToBottom()}
     >
-      <ArrowDown className="w-4 h-4" />
-      <span>Scroll to bottom</span>
+      <ArrowDownToLine className="w-5 h-5" />
     </Button>
   );
 }
@@ -304,11 +308,19 @@ export function Thread() {
             className={cn(
               "absolute px-4 inset-0 overflow-y-scroll [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-track]:bg-transparent",
               !chatStarted && "flex flex-col items-stretch mt-[25vh]",
-              chatStarted && "grid grid-rows-[1fr_auto]",
+              chatStarted && "pb-24", // Add padding for bottom bar
             )}
-            contentClassName="pt-8 pb-16  max-w-3xl mx-auto flex flex-col gap-4 w-full"
+            contentClassName="pt-8 pb-16 max-w-3xl mx-auto flex flex-col gap-4 w-full"
             content={
               <>
+                {!chatStarted && (
+                  <div className="flex gap-3 items-center justify-center mb-8">
+                    <LangGraphLogoSVG className="flex-shrink-0 h-8" />
+                    <h1 className="text-2xl font-semibold tracking-tight">
+                      glyphrunner.ai
+                    </h1>
+                  </div>
+                )}
                 {messages
                   .filter((m) => !m.id?.startsWith(DO_NOT_RENDER_ID_PREFIX))
                   .map((message, index) =>
@@ -342,88 +354,83 @@ export function Thread() {
                 )}
               </>
             }
-            footer={
-              <div className="sticky flex flex-col items-center gap-8 bottom-0">
-                {!chatStarted && (
-                  <div className="flex gap-3 items-center">
-                    <LangGraphLogoSVG className="flex-shrink-0 h-8" />
-                    <h1 className="text-2xl font-semibold tracking-tight">
-                      glyphrunner.ai
-                    </h1>
-                  </div>
-                )}
-
-                <ScrollToBottom className="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 animate-in fade-in-0 zoom-in-95" />
-
-                <div className="relative mx-auto mb-8 w-full max-w-3xl">
-                  {/* Background layer with 100% opacity */}
-                  <div className="absolute inset-0 bg-background rounded-3xl border-2 border-user-bubble-border shadow-xs z-40" />
-                  
-                  {/* Compose dialog with 50% opacity on top */}
-                  <div className="relative border-user-bubble-border bg-user-bubble rounded-3xl border-2 shadow-xs z-50">
-                    <form
-                      onSubmit={handleSubmit}
-                      className="grid grid-rows-[1fr_auto] gap-2 max-w-3xl mx-auto"
-                    >
-                      <textarea
-                        value={input}
-                        onChange={(e) => setInput(e.target.value)}
-                        onKeyDown={(e) => {
-                          if (
-                            e.key === "Enter" &&
-                            !e.shiftKey &&
-                            !e.metaKey &&
-                            !e.nativeEvent.isComposing
-                          ) {
-                            e.preventDefault();
-                            const el = e.target as HTMLElement | undefined;
-                            const form = el?.closest("form");
-                            form?.requestSubmit();
-                          }
-                        }}
-                        placeholder="Type your message..."
-                        className="p-3.5 pb-0 border-none bg-transparent field-sizing-content shadow-none ring-0 outline-none focus:outline-none focus:ring-0 resize-none"
-                      />
-
-                      <div className="flex items-center justify-between p-2 pt-4">
-                        <div>
-                          <div className="flex items-center space-x-2">
-                            <Switch
-                              id="render-tool-calls"
-                              checked={hideToolCalls ?? false}
-                              onCheckedChange={setHideToolCalls}
-                            />
-                            <Label
-                              htmlFor="render-tool-calls"
-                              className="text-sm text-gray-600"
-                            >
-                              Hide Tool Calls
-                            </Label>
-                          </div>
-                        </div>
-                        {stream.isLoading ? (
-                          <Button key="stop" onClick={() => stream.stop()}>
-                            <LoaderCircle className="w-4 h-4 animate-spin" />
-                            Cancel
-                          </Button>
-                        ) : (
-                          <Button
-                            type="submit"
-                            variant="primary"
-                            className="transition-all shadow-md"
-                            disabled={isLoading || !input.trim()}
-                          >
-                            Send
-                          </Button>
-                        )}
-                      </div>
-                    </form>
-                  </div>
-                </div>
-              </div>
-            }
           />
+
+          <ScrollToBottom className="absolute bottom-4 right-4 animate-in fade-in-0 zoom-in-95" />
         </StickToBottom>
+
+        {/* Bottom Bar */}
+        <div className="relative border-t bg-background z-10">
+          <div className="absolute inset-x-0 bottom-full h-5 bg-gradient-to-t from-background to-background/0" />
+          
+          <div className="p-4">
+            <div className="relative mx-auto w-full max-w-3xl">
+              {/* Background layer with 100% opacity */}
+              <div className="absolute inset-0 bg-background rounded-3xl border-2 border-user-bubble-border shadow-xs z-40" />
+              
+              {/* Compose dialog with 50% opacity on top */}
+              <div className="relative border-user-bubble-border bg-user-bubble rounded-3xl border-2 shadow-xs z-50">
+                <form
+                  onSubmit={handleSubmit}
+                  className="grid grid-rows-[1fr_auto] gap-2 max-w-3xl mx-auto"
+                >
+                  <textarea
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (
+                        e.key === "Enter" &&
+                        !e.shiftKey &&
+                        !e.metaKey &&
+                        !e.nativeEvent.isComposing
+                      ) {
+                        e.preventDefault();
+                        const el = e.target as HTMLElement | undefined;
+                        const form = el?.closest("form");
+                        form?.requestSubmit();
+                      }
+                    }}
+                    placeholder="Type your message..."
+                    className="p-3.5 pb-0 border-none bg-transparent field-sizing-content shadow-none ring-0 outline-none focus:outline-none focus:ring-0 resize-none"
+                  />
+
+                  <div className="flex items-center justify-between p-2 pt-4">
+                    <div>
+                      <div className="flex items-center space-x-2">
+                        <Switch
+                          id="render-tool-calls"
+                          checked={hideToolCalls ?? false}
+                          onCheckedChange={setHideToolCalls}
+                        />
+                        <Label
+                          htmlFor="render-tool-calls"
+                          className="text-sm text-gray-600"
+                        >
+                          Hide Tool Calls
+                        </Label>
+                      </div>
+                    </div>
+                    {stream.isLoading ? (
+                      <Button key="stop" onClick={() => stream.stop()}>
+                        <LoaderCircle className="w-4 h-4 animate-spin" />
+                        Cancel
+                      </Button>
+                    ) : (
+                      <Button
+                        type="submit"
+                        variant="primary"
+                        className="transition-all shadow-md"
+                        disabled={isLoading || !input.trim()}
+                      >
+                        Send
+                      </Button>
+                    )}
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
       </motion.div>
     </div>
   );

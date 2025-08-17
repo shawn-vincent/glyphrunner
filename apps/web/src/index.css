@@ -177,11 +177,19 @@
 
   .scroll-shadows::before {
     left: 0;
-    background: linear-gradient(90deg, rgba(0,0,0,0.7), transparent);
+    background: linear-gradient(90deg, rgba(0,0,0,0.08), transparent);
   }
 
   .scroll-shadows::after {
     right: 0;
+    background: linear-gradient(270deg, rgba(0,0,0,0.08), transparent);
+  }
+
+  .dark .scroll-shadows::before {
+    background: linear-gradient(90deg, rgba(0,0,0,0.7), transparent);
+  }
+
+  .dark .scroll-shadows::after {
     background: linear-gradient(270deg, rgba(0,0,0,0.7), transparent);
   }
 }

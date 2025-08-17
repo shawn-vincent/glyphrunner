@@ -76,7 +76,7 @@ export function ToolCallWithResult({
                     </td>
                     <td className="px-3 py-2 text-sm text-muted-foreground align-top text-left">
                       <div className="relative">
-                        <div className="bg-background rounded border border-border overflow-x-auto max-w-md scrollbar-thin scrollbar-track-transparent scrollbar-thumb-border scroll-shadows">
+                        <div className="bg-background rounded-lg border border-border overflow-x-auto max-w-md scrollbar-thin scrollbar-track-transparent scrollbar-thumb-border scroll-shadows">
                           <JsonHighlighter>
                             {isComplexValue(value) ? JSON.stringify(value, null, 2) : JSON.stringify(value)}
                           </JsonHighlighter>
@@ -133,7 +133,7 @@ export function ToolCallWithResult({
                               </td>
                               <td className="px-3 py-2 text-sm text-muted-foreground align-top text-left">
                                 <div className="relative">
-                                  <div className="bg-background rounded border border-border overflow-x-auto max-w-md scrollbar-thin scrollbar-track-transparent scrollbar-thumb-border scroll-shadows">
+                                  <div className="bg-background rounded-lg border border-border overflow-x-auto max-w-md scrollbar-thin scrollbar-track-transparent scrollbar-thumb-border scroll-shadows">
                                     <JsonHighlighter>
                                       {isComplexValue(value) ? JSON.stringify(value, null, 2) : JSON.stringify(value)}
                                     </JsonHighlighter>
@@ -148,7 +148,7 @@ export function ToolCallWithResult({
                   </div>
                 ) : (
                   <div className="relative">
-                    <div className="bg-background rounded border border-border overflow-x-auto max-w-full scrollbar-thin scrollbar-track-transparent scrollbar-thumb-border scroll-shadows">
+                    <div className="bg-background rounded-lg border border-border overflow-x-auto max-w-full scrollbar-thin scrollbar-track-transparent scrollbar-thumb-border scroll-shadows">
                       <JsonHighlighter>
                         {displayedResult}
                       </JsonHighlighter>
