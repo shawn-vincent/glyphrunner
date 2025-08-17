@@ -14,6 +14,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { PanelRightOpen, PanelRightClose } from "lucide-react";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
+import { TooltipIconButton } from "../tooltip-icon-button";
 
 function ThreadList({
   threads,
@@ -92,17 +93,13 @@ export default function ThreadHistory() {
     <>
       <div className="hidden lg:flex flex-col border-r-[1px] border-slate-300 items-start justify-start gap-6 h-screen w-[300px] shrink-0 shadow-inner-right">
         <div className="flex items-center justify-between w-full pt-1.5 px-4">
-          <Button
-            className="hover:bg-gray-100"
+          <TooltipIconButton
+            tooltip="Close sidebar"
             variant="ghost"
             onClick={() => setChatHistoryOpen((p) => !p)}
           >
-            {chatHistoryOpen ? (
-              <PanelRightOpen className="size-5" />
-            ) : (
-              <PanelRightClose className="size-5" />
-            )}
-          </Button>
+            <PanelRightOpen className="size-5" />
+          </TooltipIconButton>
           <h1 className="text-xl font-semibold tracking-tight">
             Thread History
           </h1>

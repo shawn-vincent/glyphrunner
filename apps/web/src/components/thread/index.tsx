@@ -28,13 +28,6 @@ import { toast } from "sonner";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { Label } from "../ui/label";
 import { Switch } from "../ui/switch";
-import { GitHubSVG } from "../icons/github";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "../ui/tooltip";
 import { ThemeToggle } from "../ui/theme-toggle";
 
 function StickyToBottomContent(props: {
@@ -75,26 +68,6 @@ function ScrollToBottom(props: { className?: string }) {
   );
 }
 
-function OpenGitHubRepo() {
-  return (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <a
-            href="https://github.com/langchain-ai/agent-chat-ui"
-            target="_blank"
-            className="flex items-center justify-center"
-          >
-            <GitHubSVG width="24" height="24" />
-          </a>
-        </TooltipTrigger>
-        <TooltipContent side="left">
-          <p>Open GitHub repo</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
-  );
-}
 
 export function Thread() {
   const [threadId, setThreadId] = useQueryState("threadId");
@@ -252,8 +225,8 @@ export function Thread() {
           <div className="absolute top-0 left-0 w-full flex items-center justify-between gap-3 p-2 pl-4 z-10">
             <div>
               {(!chatHistoryOpen || !isLargeScreen) && (
-                <Button
-                  className="hover:bg-gray-100"
+                <TooltipIconButton
+                  tooltip={chatHistoryOpen ? "Close sidebar" : "Open sidebar"}
                   variant="ghost"
                   onClick={() => setChatHistoryOpen((p) => !p)}
                 >
@@ -262,12 +235,11 @@ export function Thread() {
                   ) : (
                     <PanelRightClose className="size-5" />
                   )}
-                </Button>
+                </TooltipIconButton>
               )}
             </div>
             <div className="absolute top-2 right-4 flex items-center gap-2">
               <ThemeToggle />
-              <OpenGitHubRepo />
             </div>
           </div>
         )}
@@ -276,8 +248,8 @@ export function Thread() {
             <div className="flex items-center justify-start gap-2 relative">
               <div className="absolute left-0 z-10">
                 {(!chatHistoryOpen || !isLargeScreen) && (
-                  <Button
-                    className="hover:bg-gray-100"
+                  <TooltipIconButton
+                    tooltip={chatHistoryOpen ? "Close sidebar" : "Open sidebar"}
                     variant="ghost"
                     onClick={() => setChatHistoryOpen((p) => !p)}
                   >
@@ -286,7 +258,7 @@ export function Thread() {
                     ) : (
                       <PanelRightClose className="size-5" />
                     )}
-                  </Button>
+                  </TooltipIconButton>
                 )}
               </div>
               <motion.button
@@ -311,7 +283,6 @@ export function Thread() {
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2">
                 <ThemeToggle />
-                <OpenGitHubRepo />
               </div>
               <TooltipIconButton
                 size="lg"
@@ -433,6 +404,7 @@ export function Thread() {
                       ) : (
                         <Button
                           type="submit"
+                          variant="primary"
                           className="transition-all shadow-md"
                           disabled={isLoading || !input.trim()}
                         >
