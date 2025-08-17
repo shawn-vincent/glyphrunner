@@ -14,19 +14,24 @@
 export function configureOpenRouterEnvironment() {
   // Only configure if OPENROUTER_API_KEY is available
   if (!process.env.OPENROUTER_API_KEY) {
+    console.info("🔍 OpenRouter API key not found, skipping OpenRouter configuration");
     return;
   }
+
+  console.info("🔧 Configuring OpenRouter environment...");
 
   // For models using "openrouter/" prefix, we need to configure
   // the OpenAI client to use OpenRouter's endpoint
   if (!process.env.OPENAI_BASE_URL) {
     // Set OpenRouter as the base URL for OpenAI client when using OpenRouter models
     process.env.OPENAI_BASE_URL = "https://openrouter.ai/api/v1";
+    console.info("📡 Set OPENAI_BASE_URL to:", process.env.OPENAI_BASE_URL);
   }
 
   // Set the API key for OpenRouter
   if (!process.env.OPENAI_API_KEY && process.env.OPENROUTER_API_KEY) {
     process.env.OPENAI_API_KEY = process.env.OPENROUTER_API_KEY;
+    console.info("🔑 Set OPENAI_API_KEY from OPENROUTER_API_KEY");
   }
 }
 
@@ -34,9 +39,7 @@ export function configureOpenRouterEnvironment() {
  * Check if a model string refers to an OpenRouter model
  */
 export function isOpenRouterModel(model: string): boolean {
-  return model.startsWith("openrouter/") || 
-         model.includes("claude") && !model.startsWith("anthropic/") ||
-         model.includes("gpt") && !model.startsWith("openai/");
+  return model.startsWith("openrouter/");
 }
 
 /**
@@ -72,11 +75,16 @@ export function getOpenRouterHeaders(): Record<string, string> {
 }
 
 /**
+ * Default model configuration - centralized to maintain DRY principle
+ */
+export const DEFAULT_MODEL = "openrouter/qwen/qwen3-coder:free";
+
+/**
  * Popular OpenRouter model configurations
  */
 export const OPENROUTER_MODELS = {
   // Free models
-  "openrouter/openai/gpt-oss-20b:free": "openai/gpt-oss-20b:free", // Default free model
+  [DEFAULT_MODEL]: "openrouter/qwen/qwen3-coder:free", // Free model with reliable tool support (default)
   
   // Anthropic models via OpenRouter
   "openrouter/anthropic/claude-3-7-sonnet": "anthropic/claude-3-7-sonnet",

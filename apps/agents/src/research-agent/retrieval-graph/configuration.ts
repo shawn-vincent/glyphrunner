@@ -13,6 +13,7 @@ import {
   BaseConfigurationAnnotation,
   ensureBaseConfiguration,
 } from "../shared/configuration.js";
+import { DEFAULT_MODEL } from "../../shared/openrouter-config.js";
 
 /**
  * The configuration for the agent.
@@ -80,9 +81,9 @@ export function ensureAgentConfiguration(
   const baseConfig = ensureBaseConfiguration(config);
   return {
     ...baseConfig,
-    queryModel: configurable.queryModel || "openrouter/openai/gpt-oss-20b:free",
+    queryModel: configurable.queryModel || DEFAULT_MODEL,
     responseModel:
-      configurable.responseModel || "openrouter/openai/gpt-oss-20b:free",
+      configurable.responseModel || DEFAULT_MODEL,
     routerSystemPrompt: configurable.routerSystemPrompt || ROUTER_SYSTEM_PROMPT,
     moreInfoSystemPrompt:
       configurable.moreInfoSystemPrompt || MORE_INFO_SYSTEM_PROMPT,

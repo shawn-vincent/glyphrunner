@@ -7,6 +7,7 @@ import {
   QUERY_SYSTEM_PROMPT_TEMPLATE,
 } from "./prompts.js";
 import { Annotation } from "@langchain/langgraph";
+import { DEFAULT_MODEL } from "../shared/openrouter-config.js";
 
 /**
  * typeof ConfigurationAnnotation.State class for indexing and retrieval operations.
@@ -108,9 +109,9 @@ export function ensureConfiguration(
       configurable.responseSystemPromptTemplate ||
       RESPONSE_SYSTEM_PROMPT_TEMPLATE,
     responseModel:
-      configurable.responseModel || "openrouter/openai/gpt-oss-20b:free",
+      configurable.responseModel || DEFAULT_MODEL,
     querySystemPromptTemplate:
       configurable.querySystemPromptTemplate || QUERY_SYSTEM_PROMPT_TEMPLATE,
-    queryModel: configurable.queryModel || "openrouter/openai/gpt-oss-20b:free",
+    queryModel: configurable.queryModel || DEFAULT_MODEL,
   };
 }

@@ -4,6 +4,7 @@
 import { Annotation } from "@langchain/langgraph";
 import { SYSTEM_PROMPT_TEMPLATE } from "./prompts.js";
 import { RunnableConfig } from "@langchain/core/runnables";
+import { DEFAULT_MODEL } from "../shared/openrouter-config.js";
 
 export const ConfigurationSchema = Annotation.Root({
   /**
@@ -27,6 +28,6 @@ export function ensureConfiguration(
   return {
     systemPromptTemplate:
       configurable.systemPromptTemplate ?? SYSTEM_PROMPT_TEMPLATE,
-    model: configurable.model ?? "openrouter/openai/gpt-oss-20b:free", // Free default model via OpenRouter
+    model: configurable.model ?? DEFAULT_MODEL, // Free model with reliable tool support via OpenRouter
   };
 }

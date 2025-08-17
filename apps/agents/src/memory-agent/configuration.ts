@@ -2,6 +2,7 @@
 
 import { Annotation, LangGraphRunnableConfig } from "@langchain/langgraph";
 import { SYSTEM_PROMPT } from "./prompts.js";
+import { DEFAULT_MODEL } from "../shared/openrouter-config.js";
 
 export const ConfigurationAnnotation = Annotation.Root({
   userId: Annotation<string>(),
@@ -15,7 +16,7 @@ export function ensureConfiguration(config?: LangGraphRunnableConfig) {
   const configurable = config?.configurable || {};
   return {
     userId: configurable?.userId || "default",
-    model: configurable?.model || "openrouter/openai/gpt-oss-20b:free", // Free default model via OpenRouter
+    model: configurable?.model || DEFAULT_MODEL, // Free model with reliable tool support via OpenRouter
     systemPrompt: configurable?.systemPrompt || SYSTEM_PROMPT,
   };
 }

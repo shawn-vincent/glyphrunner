@@ -91,7 +91,7 @@ MONGODB_URI=your-mongodb-uri
 ## Agent Configuration
 
 Agents are configured via `langgraph.json` and support model switching:
-- Default model: `openrouter/openai/gpt-oss-20b:free` (free model via OpenRouter)
+- Default model: `openrouter/openai/gpt-oss-20b:free` (free model with tool support via OpenRouter)
 - Configurable via LangGraph Studio or runtime configuration
 - Each agent has specific prompts and tool configurations in their respective directories
 
@@ -102,7 +102,7 @@ Agents are configured via `langgraph.json` and support model switching:
 - `openai/gpt-4o` - OpenAI models
 
 **OpenRouter (100+ models):**
-- `openrouter/openai/gpt-oss-20b:free` - Free model (default)
+- `openrouter/openai/gpt-oss-20b:free` - Free model with tool support (default)
 - `openrouter/anthropic/claude-3-7-sonnet` - Anthropic via OpenRouter
 - `openrouter/openai/gpt-4o` - OpenAI via OpenRouter  
 - `openrouter/meta-llama/llama-3.2-90b-instruct` - Meta Llama models

@@ -23,9 +23,11 @@ async function callModel(
   // Configure OpenRouter environment if needed
   configureOpenRouterEnvironment();
   
+  const configurable = ensureConfiguration(config);
+  console.info("🤖 Memory agent loading model:", configurable.model);
+  
   const llm = await initChatModel();
   const store = getStoreFromConfigOrThrow(config);
-  const configurable = ensureConfiguration(config);
   const memories = await store.search(["memories", configurable.userId], {
     limit: 10,
   });
