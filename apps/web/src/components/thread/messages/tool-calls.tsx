@@ -67,16 +67,16 @@ export function ToolCallWithResult({
         </h4>
         {hasArgs ? (
           <div className="overflow-x-auto">
-            <table className="w-full divide-y divide-border">
+            <table className="w-full divide-y divide-border" style={{ tableLayout: 'fixed' }}>
               <tbody className="divide-y divide-border">
                 {Object.entries(args).map(([key, value], argIdx) => (
                   <tr key={argIdx} className="hover:bg-muted/50">
-                    <td className="px-3 py-2 text-sm font-medium text-foreground whitespace-nowrap align-top text-right w-1">
+                    <td className="px-3 py-2 text-sm font-medium text-foreground whitespace-nowrap align-top text-right" style={{ width: '25%' }}>
                       {key}:
                     </td>
                     <td className="px-3 py-2 text-sm text-muted-foreground align-top text-left">
                       <div className="relative">
-                        <div className="bg-background rounded-lg border border-border overflow-x-auto max-w-md scrollbar-thin scrollbar-track-transparent scrollbar-thumb-border scroll-shadows">
+                        <div className="bg-background rounded-lg border border-border overflow-x-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-border scroll-shadows">
                           <JsonHighlighter>
                             {isComplexValue(value) ? JSON.stringify(value, null, 2) : JSON.stringify(value)}
                           </JsonHighlighter>
@@ -115,7 +115,7 @@ export function ToolCallWithResult({
               >
                 {isJsonResult ? (
                   <div className="overflow-x-auto">
-                    <table className="w-full divide-y divide-border">
+                    <table className="w-full divide-y divide-border" style={{ tableLayout: 'fixed' }}>
                       <tbody className="divide-y divide-border">
                         {(Array.isArray(parsedResult)
                           ? isExpanded
@@ -128,12 +128,12 @@ export function ToolCallWithResult({
                             : [item[0], item[1]];
                           return (
                             <tr key={argIdx} className="hover:bg-muted/50">
-                              <td className="px-3 py-2 text-sm font-medium text-foreground whitespace-nowrap align-top text-right w-1">
+                              <td className="px-3 py-2 text-sm font-medium text-foreground whitespace-nowrap align-top text-right" style={{ width: '25%' }}>
                                 {key}:
                               </td>
                               <td className="px-3 py-2 text-sm text-muted-foreground align-top text-left">
                                 <div className="relative">
-                                  <div className="bg-background rounded-lg border border-border overflow-x-auto max-w-md scrollbar-thin scrollbar-track-transparent scrollbar-thumb-border scroll-shadows">
+                                  <div className="bg-background rounded-lg border border-border overflow-x-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-border scroll-shadows">
                                     <JsonHighlighter>
                                       {isComplexValue(value) ? JSON.stringify(value, null, 2) : JSON.stringify(value)}
                                     </JsonHighlighter>
