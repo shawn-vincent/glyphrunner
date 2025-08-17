@@ -355,64 +355,70 @@ export function Thread() {
 
                 <ScrollToBottom className="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 animate-in fade-in-0 zoom-in-95" />
 
-                <div className="bg-muted rounded-2xl border shadow-xs mx-auto mb-8 w-full max-w-3xl relative z-50">
-                  <form
-                    onSubmit={handleSubmit}
-                    className="grid grid-rows-[1fr_auto] gap-2 max-w-3xl mx-auto"
-                  >
-                    <textarea
-                      value={input}
-                      onChange={(e) => setInput(e.target.value)}
-                      onKeyDown={(e) => {
-                        if (
-                          e.key === "Enter" &&
-                          !e.shiftKey &&
-                          !e.metaKey &&
-                          !e.nativeEvent.isComposing
-                        ) {
-                          e.preventDefault();
-                          const el = e.target as HTMLElement | undefined;
-                          const form = el?.closest("form");
-                          form?.requestSubmit();
-                        }
-                      }}
-                      placeholder="Type your message..."
-                      className="p-3.5 pb-0 border-none bg-transparent field-sizing-content shadow-none ring-0 outline-none focus:outline-none focus:ring-0 resize-none"
-                    />
+                <div className="relative mx-auto mb-8 w-full max-w-3xl">
+                  {/* Background layer with 100% opacity */}
+                  <div className="absolute inset-0 bg-background rounded-3xl border-2 border-user-bubble-border shadow-xs z-40" />
+                  
+                  {/* Compose dialog with 50% opacity on top */}
+                  <div className="relative border-user-bubble-border bg-user-bubble rounded-3xl border-2 shadow-xs z-50">
+                    <form
+                      onSubmit={handleSubmit}
+                      className="grid grid-rows-[1fr_auto] gap-2 max-w-3xl mx-auto"
+                    >
+                      <textarea
+                        value={input}
+                        onChange={(e) => setInput(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (
+                            e.key === "Enter" &&
+                            !e.shiftKey &&
+                            !e.metaKey &&
+                            !e.nativeEvent.isComposing
+                          ) {
+                            e.preventDefault();
+                            const el = e.target as HTMLElement | undefined;
+                            const form = el?.closest("form");
+                            form?.requestSubmit();
+                          }
+                        }}
+                        placeholder="Type your message..."
+                        className="p-3.5 pb-0 border-none bg-transparent field-sizing-content shadow-none ring-0 outline-none focus:outline-none focus:ring-0 resize-none"
+                      />
 
-                    <div className="flex items-center justify-between p-2 pt-4">
-                      <div>
-                        <div className="flex items-center space-x-2">
-                          <Switch
-                            id="render-tool-calls"
-                            checked={hideToolCalls ?? false}
-                            onCheckedChange={setHideToolCalls}
-                          />
-                          <Label
-                            htmlFor="render-tool-calls"
-                            className="text-sm text-gray-600"
-                          >
-                            Hide Tool Calls
-                          </Label>
+                      <div className="flex items-center justify-between p-2 pt-4">
+                        <div>
+                          <div className="flex items-center space-x-2">
+                            <Switch
+                              id="render-tool-calls"
+                              checked={hideToolCalls ?? false}
+                              onCheckedChange={setHideToolCalls}
+                            />
+                            <Label
+                              htmlFor="render-tool-calls"
+                              className="text-sm text-gray-600"
+                            >
+                              Hide Tool Calls
+                            </Label>
+                          </div>
                         </div>
+                        {stream.isLoading ? (
+                          <Button key="stop" onClick={() => stream.stop()}>
+                            <LoaderCircle className="w-4 h-4 animate-spin" />
+                            Cancel
+                          </Button>
+                        ) : (
+                          <Button
+                            type="submit"
+                            variant="primary"
+                            className="transition-all shadow-md"
+                            disabled={isLoading || !input.trim()}
+                          >
+                            Send
+                          </Button>
+                        )}
                       </div>
-                      {stream.isLoading ? (
-                        <Button key="stop" onClick={() => stream.stop()}>
-                          <LoaderCircle className="w-4 h-4 animate-spin" />
-                          Cancel
-                        </Button>
-                      ) : (
-                        <Button
-                          type="submit"
-                          variant="primary"
-                          className="transition-all shadow-md"
-                          disabled={isLoading || !input.trim()}
-                        >
-                          Send
-                        </Button>
-                      )}
-                    </div>
-                  </form>
+                    </form>
+                  </div>
                 </div>
               </div>
             }
