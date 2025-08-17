@@ -32,7 +32,7 @@ async function analyzeAndRouteQuery(
     })
     .describe("Classify user query.");
   const response = await model.withStructuredOutput(Router).invoke(messages);
-  return { router: response };
+  return { router: response as { logic: string; type: "more-info" | "langchain" | "general" } };
 }
 
 function routeQuery(

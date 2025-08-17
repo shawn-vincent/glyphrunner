@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import { ReactNode } from "react";
+import { Wrench } from "lucide-react";
 
 interface MessageBubbleProps {
   type: "user" | "assistant" | "tool";
@@ -71,10 +72,8 @@ export function MessageBubble({
           ) : isTool ? (
             <>
               <div className={pillClass}>
-                <span className="text-xs font-medium text-foreground">Tool {toolName || "tool"}</span>
-                {toolId && (
-                  <code className="ml-1 text-xs opacity-70 font-mono">{toolId}</code>
-                )}
+                <Wrench className="w-3 h-3" />
+                <span className="text-xs font-medium text-foreground ml-1">{toolName || "tool"}</span>
               </div>
               <span className="text-xs text-muted-foreground">{timestamp}</span>
             </>
@@ -90,7 +89,14 @@ export function MessageBubble({
         
         {/* Message bubble */}
         <div className={bubbleClass}>
-          {content}
+          <div className="relative">
+            {content}
+            {isTool && toolId && (
+              <div className="flex justify-end mt-3 pt-2 border-t border-border">
+                <code className="text-xs text-muted-foreground/70 font-mono">{toolId}</code>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
