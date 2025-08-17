@@ -84,7 +84,7 @@ export const DEFAULT_MODEL = "openrouter/qwen/qwen3-coder:free";
  */
 export const OPENROUTER_MODELS = {
   // Free models
-  [DEFAULT_MODEL]: "openrouter/qwen/qwen3-coder:free", // Free model with reliable tool support (default)
+  [DEFAULT_MODEL]: "qwen/qwen3-coder:free", // Free model with reliable tool support (default)
   
   // Anthropic models via OpenRouter
   "openrouter/anthropic/claude-3-7-sonnet": "anthropic/claude-3-7-sonnet",

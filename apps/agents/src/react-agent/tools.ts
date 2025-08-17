@@ -5,12 +5,25 @@
 import { TavilySearchResults } from "@langchain/community/tools/tavily_search";
 
 /**
- * Tavily search tool configuration
- * This tool allows the agent to perform web searches using the Tavily API.
+ * Get available tools based on environment configuration
+ * Only includes tools for which API keys are available
  */
-const searchTavily = new TavilySearchResults({
-  maxResults: 3,
-});
+function getAvailableTools() {
+  const tools = [];
+
+  // Only add Tavily search if API key is available
+  if (process.env.TAVILY_API_KEY) {
+    console.info("🔍 Adding Tavily search tool");
+    const searchTavily = new TavilySearchResults({
+      maxResults: 3,
+    });
+    tools.push(searchTavily);
+  } else {
+    console.error("⚠️  TAVILY_API_KEY not found - Tavily search tool disabled");
+  }
+
+  return tools;
+}
 
 /**
  * Export an array of all available tools
@@ -20,4 +33,4 @@ const searchTavily = new TavilySearchResults({
  * and add them to this array.
  * See https://js.langchain.com/docs/how_to/custom_tools/#tool-function for more information.
  */
-export const TOOLS = [searchTavily];
+export const TOOLS = getAvailableTools();
