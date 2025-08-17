@@ -18,3 +18,11 @@ In neon alleyways of data and silence, *glyphs* are everywhere—API hieroglyphs
 ---
 
 > *Write code lightly, leave the world brighter.*
+
+
+---
+
+```sh
+npm install # install dependencies
+npm run dev # start web(5173) & langgraph(2024) server
+```

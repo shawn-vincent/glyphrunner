@@ -14,36 +14,111 @@ A cyber-dharma odyssey where autonomous intent dances through hidden symbols. Gl
 3. **Leave No Trace** – travel light; shed state like worn robes
 4. **Illuminate** – surface insight, not noise; your agent should feel like inner vision, not spam
 
-### Repository Structure
-- `docs/` - Documentation and project assets
-- `docs/requirements/` - Requirements specifications
-- `meta/history/` - Project history and evolution tracking
-
-## Development Setup
-
-GlyphRunner is in the design and architectural planning phase. The project follows a mindful development approach aligned with its cyber-dharma philosophy.
-
-### Development Principles
-- Write code lightly, leave the world brighter
-- Every implementation decision should reflect the core philosophy
-- Focus on autonomous intent and symbol interpretation capabilities
-- Maintain clean, enlightened code architecture
-
 ## Architecture
 
-The project is designed around the concept of "glyphs" as interpretable symbols throughout data systems:
+GlyphRunner is a **monorepo with dual architecture**:
 
-### Key Concepts
-- **Glyphs**: Symbolic representations (API responses, log entries, user inputs, data patterns)
-- **Runners**: Autonomous agents that interpret and act on glyphs
-- **Signal Liberation**: The process of extracting meaningful intent from symbolic noise
-- **Cyber-Dharma**: Mindful, intentional interaction with digital systems
+### Backend: LangGraph Agents (`apps/agents/`)
+- **Framework**: LangGraph.js with TypeScript
+- **Agent Types**: 
+  - `memory-agent` - ReAct agent with memory persistence
+  - `react-agent` - Basic ReAct agent with tools
+  - `research-agent` - Document indexing and retrieval
+  - `retrieval-agent` - Vector search and retrieval
+- **Configuration**: Defined in `langgraph.json` with 5 different graph endpoints
+- **State Management**: Each agent uses LangGraph's state management with typed annotations
+- **Tools**: Agents can use external APIs (Tavily search, etc.) and custom tool implementations
 
-### Planned Components
-- Glyph detection and interpretation engine
-- Autonomous intent processing system
-- Context flow management
-- Signal extraction and amplification tools
+### Frontend: React Web App (`apps/web/`)
+- **Framework**: React 19 + Vite + TypeScript
+- **UI Library**: Radix UI components with Tailwind CSS
+- **Threading**: LangGraph SDK integration for real-time agent conversations
+- **Styling**: Custom cyber-dharma theme (black/white/cyan palette)
+
+### Key Integration Points
+- **LangGraph SDK**: Frontend communicates with agent graphs via `@langchain/langgraph-sdk`
+- **Real-time Streaming**: Agent responses stream to the web interface
+- **Thread Management**: Persistent conversation threads with state management
+- **Memory Integration**: Agents can store and retrieve user-specific memories across sessions
+
+## Development Commands
+
+### Root Level
+```bash
+npm install              # Install all dependencies
+npm run dev             # Start both web (port 5173) and agents (port 2024)
+npm run build           # Build all apps
+npm run lint            # Lint all apps
+npm run lint:fix        # Fix linting issues
+npm run format          # Format all code
+```
+
+### Web App (`apps/web/`)
+```bash
+npm run dev             # Start Vite dev server (port 5173)
+npm run build           # Build for production
+npm run lint            # ESLint check
+npm run preview         # Preview production build
+```
+
+### Agents (`apps/agents/`)
+```bash
+npm run dev             # Start LangGraph server (port 2024)
+npm run build           # Compile TypeScript
+npm run clean           # Remove dist and turbo cache
+npm run lint            # ESLint check
+npm run lint:fix        # Fix linting issues
+```
+
+## Environment Setup
+
+Create `.env` file with required API keys:
+```bash
+# Required for agents
+ANTHROPIC_API_KEY=your-anthropic-key
+OPENAI_API_KEY=your-openai-key  
+TAVILY_API_KEY=your-tavily-key
+
+# Optional for specific agents
+PINECONE_API_KEY=your-pinecone-key
+MONGODB_URI=your-mongodb-uri
+```
+
+## Agent Configuration
+
+Agents are configured via `langgraph.json` and support model switching:
+- Default model: `anthropic/claude-3-7-sonnet-latest`
+- Configurable via LangGraph Studio or runtime configuration
+- Each agent has specific prompts and tool configurations in their respective directories
+
+## Development Workflow
+
+1. **Start Development**: `npm run dev` (starts both frontend and backend)
+2. **LangGraph Studio**: Open the project in LangGraph Studio for visual agent development
+3. **Agent Testing**: Use Studio's interface to test individual agent graphs
+4. **Frontend Development**: React app auto-reloads at `localhost:5173`
+5. **Agent Development**: LangGraph server runs at `localhost:2024`
+
+## Code Architecture Patterns
+
+### Agent Structure
+Each agent follows this pattern:
+```
+src/[agent-name]/
+├── graph.ts           # Main LangGraph definition
+├── state.ts           # State type annotations  
+├── configuration.ts   # Configuration schema
+├── prompts.ts         # System prompts
+├── tools.ts           # Custom tools
+├── utils.ts           # Helper functions
+└── tests/             # Unit and integration tests
+```
+
+### Frontend Structure
+- **Components**: Modular React components in `src/components/`
+- **Thread Management**: Specialized components for LangGraph conversation handling
+- **Providers**: Context providers for SDK client and thread state
+- **Hooks**: Custom hooks for media queries and state management
 
 ## Available External Tools
 
@@ -68,11 +143,3 @@ The project is designed around the concept of "glyphs" as interpretable symbols 
   - `codex exec "refactor this component to use TypeScript and add error handling"`
   - `codex exec "explain this algorithm step-by-step and suggest optimizations"`
 - **Alias**: Consider `alias cx="codex exec"` for quicker access
-
-## Notes
-
-This CLAUDE.md file should be updated as the project develops to include:
-- Build and development commands
-- Testing frameworks and commands
-- Code architecture and patterns
-- Development workflow and conventions
