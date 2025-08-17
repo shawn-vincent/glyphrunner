@@ -6,7 +6,7 @@ import { BranchSwitcher, CommandBar } from "./shared";
 import { MarkdownText } from "../markdown-text";
 import { LoadExternalComponent } from "@langchain/langgraph-sdk/react-ui";
 import { cn } from "@/lib/utils";
-import { ToolCalls, ToolResult } from "./tool-calls";
+import { ToolCallWithResult } from "./tool-calls";
 import { MessageContentComplex } from "@langchain/core/messages";
 import { Fragment } from "react/jsx-runtime";
 import { isAgentInboxInterruptSchema } from "@/lib/agent-inbox-interrupt";
@@ -91,6 +91,22 @@ export function AssistantMessage({
   const meta = message ? thread.getMessagesMetadata(message) : undefined;
   const threadInterrupt = thread.interrupt;
 
+  // Helper function to find tool results for tool calls
+  const findToolResults = (toolCalls: AIMessage["tool_calls"]) => {
+    if (!toolCalls || !thread.messages) return [];
+    
+    return toolCalls.map(toolCall => {
+      const toolResult = thread.messages.find(
+        (msg) => 
+          msg.type === "tool" && 
+          "tool_call_id" in msg && 
+          msg.tool_call_id === toolCall.id
+      ) as ToolMessage | undefined;
+      
+      return { toolCall, toolResult };
+    });
+  };
+
   const parentCheckpoint = meta?.firstSeenState?.parent_checkpoint;
   const anthropicStreamedToolCalls = Array.isArray(content)
     ? parseAnthropicStreamedToolCalls(content)
@@ -111,6 +127,22 @@ export function AssistantMessage({
 
   if (isToolResult && hideToolCalls) {
     return null;
+  }
+
+  // Hide tool result messages that are already included in unified tool call bubbles
+  if (isToolResult) {
+    // Find the AI message that contains the tool call for this result
+    const correspondingAIMessage = thread.messages.find(
+      (msg) => 
+        msg.type === "ai" && 
+        "tool_calls" in msg && 
+        msg.tool_calls?.some(tc => tc.id === (message as ToolMessage).tool_call_id)
+    );
+    
+    // If we found the corresponding AI message, don't render this tool result separately
+    if (correspondingAIMessage) {
+      return null;
+    }
   }
 
   // Get current time for timestamp
@@ -139,14 +171,29 @@ export function AssistantMessage({
       )}
 
       {!hideToolCalls && (
-        <div className="mr-8">
-          {(hasToolCalls && toolCallsHaveContents && (
-            <ToolCalls toolCalls={message.tool_calls} />
-          )) ||
-            (hasAnthropicToolCalls && (
-              <ToolCalls toolCalls={anthropicStreamedToolCalls} />
-            )) ||
-            (hasToolCalls && <ToolCalls toolCalls={message.tool_calls} />)}
+        <div className="mr-8 space-y-4">
+          {hasToolCalls && message.tool_calls && (
+            <>
+              {findToolResults(message.tool_calls).map(({ toolCall, toolResult }, idx) => (
+                <ToolCallWithResult
+                  key={`${toolCall.id}-${idx}`}
+                  toolCall={toolCall}
+                  toolResult={toolResult}
+                />
+              ))}
+            </>
+          )}
+          {hasAnthropicToolCalls && anthropicStreamedToolCalls && (
+            <>
+              {findToolResults(anthropicStreamedToolCalls).map(({ toolCall, toolResult }, idx) => (
+                <ToolCallWithResult
+                  key={`${toolCall.id}-${idx}`}
+                  toolCall={toolCall}
+                  toolResult={toolResult}
+                />
+              ))}
+            </>
+          )}
         </div>
       )}
 

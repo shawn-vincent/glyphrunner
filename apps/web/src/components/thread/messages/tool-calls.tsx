@@ -2,185 +2,186 @@ import { AIMessage, ToolMessage } from "@langchain/langgraph-sdk";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { MessageBubble } from "./message-bubble";
+import { cn } from "@/lib/utils";
+import { JsonHighlighter } from "../json-highlighter";
 
 function isComplexValue(value: any): boolean {
   return Array.isArray(value) || (typeof value === "object" && value !== null);
 }
 
-export function ToolCalls({
-  toolCalls,
-}: {
-  toolCalls: AIMessage["tool_calls"];
+// Unified component that combines tool call and result in a single bubble
+export function ToolCallWithResult({ 
+  toolCall, 
+  toolResult 
+}: { 
+  toolCall: AIMessage["tool_calls"][0]; 
+  toolResult?: ToolMessage;
 }) {
-  if (!toolCalls || toolCalls.length === 0) return null;
-
-  return (
-    <div className="space-y-4 w-full max-w-4xl">
-      {toolCalls.map((tc, idx) => {
-        const args = tc.args as Record<string, any>;
-        const hasArgs = Object.keys(args).length > 0;
-        return (
-          <div
-            key={idx}
-            className="border border-gray-200 rounded-lg overflow-hidden"
-          >
-            <div className="bg-gray-50 px-4 py-2 border-b border-gray-200">
-              <h3 className="font-medium text-gray-900">
-                {tc.name}
-                {tc.id && (
-                  <code className="ml-2 text-sm bg-gray-100 px-2 py-1 rounded">
-                    {tc.id}
-                  </code>
-                )}
-              </h3>
-            </div>
-            {hasArgs ? (
-              <table className="min-w-full divide-y divide-gray-200">
-                <tbody className="divide-y divide-gray-200">
-                  {Object.entries(args).map(([key, value], argIdx) => (
-                    <tr key={argIdx}>
-                      <td className="px-4 py-2 text-sm font-medium text-gray-900 whitespace-nowrap">
-                        {key}
-                      </td>
-                      <td className="px-4 py-2 text-sm text-gray-500">
-                        {isComplexValue(value) ? (
-                          <code className="bg-gray-50 rounded px-2 py-1 font-mono text-sm break-all">
-                            {JSON.stringify(value, null, 2)}
-                          </code>
-                        ) : (
-                          String(value)
-                        )}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            ) : (
-              <code className="text-sm block p-3">{"{}"}</code>
-            )}
-          </div>
-        );
-      })}
-    </div>
-  );
-}
-
-export function ToolResult({ message }: { message: ToolMessage }) {
   const [isExpanded, setIsExpanded] = useState(false);
+  
+  // Get current time for timestamp
+  const timestamp = new Date().toLocaleTimeString([], { 
+    hour: 'numeric', 
+    minute: '2-digit',
+    hour12: true 
+  }).toLowerCase().replace(' ', '');
 
-  let parsedContent: any;
-  let isJsonContent = false;
+  const args = toolCall.args as Record<string, any>;
+  const hasArgs = Object.keys(args).length > 0;
 
-  try {
-    if (typeof message.content === "string") {
-      parsedContent = JSON.parse(message.content);
-      isJsonContent = true;
+  // Parse tool result if available
+  let parsedResult: any;
+  let isJsonResult = false;
+  let resultContent = "";
+  
+  if (toolResult) {
+    try {
+      if (typeof toolResult.content === "string") {
+        parsedResult = JSON.parse(toolResult.content);
+        isJsonResult = true;
+      }
+    } catch {
+      parsedResult = toolResult.content;
     }
-  } catch {
-    // Content is not JSON, use as is
-    parsedContent = message.content;
+    
+    resultContent = isJsonResult
+      ? JSON.stringify(parsedResult, null, 2)
+      : String(toolResult.content);
   }
 
-  const contentStr = isJsonContent
-    ? JSON.stringify(parsedContent, null, 2)
-    : String(message.content);
-  const contentLines = contentStr.split("\n");
-  const shouldTruncate = contentLines.length > 4 || contentStr.length > 500;
-  const displayedContent =
-    shouldTruncate && !isExpanded
-      ? contentStr.length > 500
-        ? contentStr.slice(0, 500) + "..."
-        : contentLines.slice(0, 4).join("\n") + "\n..."
-      : contentStr;
+  const shouldTruncateResult = resultContent.length > 500 || resultContent.split("\n").length > 4;
+  const displayedResult = shouldTruncateResult && !isExpanded
+    ? resultContent.length > 500
+      ? resultContent.slice(0, 500) + "..."
+      : resultContent.split("\n").slice(0, 4).join("\n") + "\n..."
+    : resultContent;
+
+  const unifiedContent = (
+    <div className="space-y-4">
+      {/* Tool Input Section */}
+      <div>
+        <h4 className="text-sm font-medium text-foreground mb-2 flex items-center gap-2">
+          <span className="w-2 h-2 rounded-full bg-muted-foreground"></span>
+          Input
+        </h4>
+        {hasArgs ? (
+          <div className="overflow-x-auto">
+            <table className="w-full divide-y divide-border">
+              <tbody className="divide-y divide-border">
+                {Object.entries(args).map(([key, value], argIdx) => (
+                  <tr key={argIdx} className="hover:bg-muted/50">
+                    <td className="px-3 py-2 text-sm font-medium text-foreground whitespace-nowrap align-top text-right w-1">
+                      {key}:
+                    </td>
+                    <td className="px-3 py-2 text-sm text-muted-foreground align-top text-left">
+                      <div className="bg-background rounded border border-border overflow-hidden">
+                        <JsonHighlighter>
+                          {isComplexValue(value) ? JSON.stringify(value, null, 2) : JSON.stringify(value)}
+                        </JsonHighlighter>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <code className="text-sm block p-3 bg-muted rounded text-muted-foreground">{"{}"}</code>
+        )}
+      </div>
+
+      {/* Tool Result Section */}
+      {toolResult && (
+        <div>
+          <h4 className="text-sm font-medium text-foreground mb-2 flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-green-500"></span>
+            Result
+          </h4>
+          <motion.div
+            initial={false}
+            animate={{ height: "auto" }}
+            transition={{ duration: 0.3 }}
+          >
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div
+                key={isExpanded ? "expanded" : "collapsed"}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.2 }}
+              >
+                {isJsonResult ? (
+                  <div className="overflow-x-auto">
+                    <table className="w-full divide-y divide-border">
+                      <tbody className="divide-y divide-border">
+                        {(Array.isArray(parsedResult)
+                          ? isExpanded
+                            ? parsedResult
+                            : parsedResult.slice(0, 5)
+                          : Object.entries(parsedResult)
+                        ).map((item, argIdx) => {
+                          const [key, value] = Array.isArray(parsedResult)
+                            ? [argIdx, item]
+                            : [item[0], item[1]];
+                          return (
+                            <tr key={argIdx} className="hover:bg-muted/50">
+                              <td className="px-3 py-2 text-sm font-medium text-foreground whitespace-nowrap align-top text-right w-1">
+                                {key}:
+                              </td>
+                              <td className="px-3 py-2 text-sm text-muted-foreground align-top text-left">
+                                <div className="bg-background rounded border border-border overflow-hidden">
+                                  <JsonHighlighter>
+                                    {isComplexValue(value) ? JSON.stringify(value, null, 2) : JSON.stringify(value)}
+                                  </JsonHighlighter>
+                                </div>
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
+                ) : (
+                  <div className="bg-background rounded border border-border overflow-hidden">
+                    <JsonHighlighter>
+                      {displayedResult}
+                    </JsonHighlighter>
+                  </div>
+                )}
+              </motion.div>
+            </AnimatePresence>
+            {((shouldTruncateResult && !isJsonResult) ||
+              (isJsonResult &&
+                Array.isArray(parsedResult) &&
+                parsedResult.length > 5)) && (
+              <motion.button
+                onClick={() => setIsExpanded(!isExpanded)}
+                className={cn(
+                  "w-full py-2 flex items-center justify-center border-t border-border mt-2",
+                  "text-muted-foreground hover:text-foreground hover:bg-muted/50",
+                  "transition-all ease-in-out duration-200 cursor-pointer rounded-b-lg"
+                )}
+                initial={{ scale: 1 }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+              </motion.button>
+            )}
+          </motion.div>
+        </div>
+      )}
+    </div>
+  );
 
   return (
-    <div className="border border-gray-200 rounded-lg overflow-hidden">
-      <div className="bg-gray-50 px-4 py-2 border-b border-gray-200">
-        <div className="flex items-center justify-between gap-2 flex-wrap">
-          {message.name ? (
-            <h3 className="font-medium text-gray-900">
-              Tool Result:{" "}
-              <code className="bg-gray-100 px-2 py-1 rounded">
-                {message.name}
-              </code>
-            </h3>
-          ) : (
-            <h3 className="font-medium text-gray-900">Tool Result</h3>
-          )}
-          {message.tool_call_id && (
-            <code className="ml-2 text-sm bg-gray-100 px-2 py-1 rounded">
-              {message.tool_call_id}
-            </code>
-          )}
-        </div>
-      </div>
-      <motion.div
-        className="min-w-full bg-gray-100"
-        initial={false}
-        animate={{ height: "auto" }}
-        transition={{ duration: 0.3 }}
-      >
-        <div className="p-3">
-          <AnimatePresence mode="wait" initial={false}>
-            <motion.div
-              key={isExpanded ? "expanded" : "collapsed"}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.2 }}
-            >
-              {isJsonContent ? (
-                <table className="min-w-full divide-y divide-gray-200">
-                  <tbody className="divide-y divide-gray-200">
-                    {(Array.isArray(parsedContent)
-                      ? isExpanded
-                        ? parsedContent
-                        : parsedContent.slice(0, 5)
-                      : Object.entries(parsedContent)
-                    ).map((item, argIdx) => {
-                      const [key, value] = Array.isArray(parsedContent)
-                        ? [argIdx, item]
-                        : [item[0], item[1]];
-                      return (
-                        <tr key={argIdx}>
-                          <td className="px-4 py-2 text-sm font-medium text-gray-900 whitespace-nowrap">
-                            {key}
-                          </td>
-                          <td className="px-4 py-2 text-sm text-gray-500">
-                            {isComplexValue(value) ? (
-                              <code className="bg-gray-50 rounded px-2 py-1 font-mono text-sm break-all">
-                                {JSON.stringify(value, null, 2)}
-                              </code>
-                            ) : (
-                              String(value)
-                            )}
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              ) : (
-                <code className="text-sm block">{displayedContent}</code>
-              )}
-            </motion.div>
-          </AnimatePresence>
-        </div>
-        {((shouldTruncate && !isJsonContent) ||
-          (isJsonContent &&
-            Array.isArray(parsedContent) &&
-            parsedContent.length > 5)) && (
-          <motion.button
-            onClick={() => setIsExpanded(!isExpanded)}
-            className="w-full py-2 flex items-center justify-center border-t-[1px] border-gray-200 text-gray-500 hover:text-gray-600 hover:bg-gray-50 transition-all ease-in-out duration-200 cursor-pointer"
-            initial={{ scale: 1 }}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            {isExpanded ? <ChevronUp /> : <ChevronDown />}
-          </motion.button>
-        )}
-      </motion.div>
-    </div>
+    <MessageBubble
+      type="tool"
+      toolName={toolCall.name}
+      toolId={toolCall.id}
+      content={unifiedContent}
+      timestamp={timestamp}
+    />
   );
 }
