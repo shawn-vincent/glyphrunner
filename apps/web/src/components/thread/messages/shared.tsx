@@ -55,7 +55,7 @@ function ContentCopyable({
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.15 }}
           >
-            <Copy />
+            <Copy className="text-foreground size-4" />
           </motion.div>
         )}
       </AnimatePresence>
@@ -90,7 +90,7 @@ export function BranchSwitcher({
         }}
         disabled={isLoading}
       >
-        <ChevronLeft />
+        <ChevronLeft className="text-foreground size-4" />
       </Button>
       <span className="text-sm">
         {index + 1} / {branchOptions.length}
@@ -106,7 +106,7 @@ export function BranchSwitcher({
         }}
         disabled={isLoading}
       >
-        <ChevronRight />
+        <ChevronRight className="text-foreground size-4" />
       </Button>
     </div>
   );
@@ -171,7 +171,7 @@ export function CommandBar({
             setIsEditing(false);
           }}
         >
-          <XIcon />
+          <XIcon className="text-foreground size-4" />
         </TooltipIconButton>
         <TooltipIconButton
           disabled={isLoading}
@@ -179,7 +179,7 @@ export function CommandBar({
           variant="secondary"
           onClick={handleSubmitEdit}
         >
-          <SendHorizontal />
+          <SendHorizontal className="text-foreground size-4" />
         </TooltipIconButton>
       </div>
     );
@@ -195,7 +195,7 @@ export function CommandBar({
           variant="ghost"
           onClick={handleRegenerate}
         >
-          <RefreshCcw />
+          <RefreshCcw className="text-foreground size-4" />
         </TooltipIconButton>
       )}
       {showEdit && (
@@ -207,7 +207,7 @@ export function CommandBar({
             setIsEditing?.(true);
           }}
         >
-          <Pencil />
+          <Pencil className="text-foreground size-4" />
         </TooltipIconButton>
       )}
     </div>

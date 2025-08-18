@@ -51,7 +51,7 @@ function ThreadListContent({
           <div key={t.thread_id} className="w-full px-1">
             <Button
               variant="ghost"
-              className="text-left items-start justify-between font-normal w-[280px] h-auto py-2"
+              className="text-left items-start justify-between font-normal w-full h-auto py-2"
               onClick={(e) => {
                 e.preventDefault();
                 onThreadClick?.(t.thread_id);
@@ -73,7 +73,7 @@ function ThreadListLoading() {
   return (
     <>
       {Array.from({ length: 30 }).map((_, i) => (
-        <Skeleton key={`skeleton-${i}`} className="w-[280px] h-10" />
+        <Skeleton key={`skeleton-${i}`} className="w-full h-10" />
       ))}
     </>
   );

@@ -1,5 +1,5 @@
 import { useThreads } from "@/providers/Thread";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useQueryState, parseAsBoolean } from "nuqs";
 import {
   Sheet,
@@ -21,10 +21,7 @@ export default function SiteMenu() {
     "chatHistoryOpen",
     parseAsBoolean.withDefault(false),
   );
-  const [settingsOpen, setSettingsOpen] = useQueryState(
-    "settingsOpen",
-    parseAsBoolean.withDefault(false),
-  );
+  const [settingsOpen, setSettingsOpen] = useState(false);
 
   const { getThreads, threads, setThreads, threadsLoading, setThreadsLoading } =
     useThreads();

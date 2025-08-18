@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { X, Monitor, Sun, Moon, ChevronDown, Check } from "lucide-react";
 import { useTheme } from "next-themes";
 import { TooltipIconButton } from "../tooltip-icon-button";
@@ -13,6 +14,9 @@ export function SettingsDrawer({ isOpen, onClose }: SettingsDrawerProps) {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  // Debug logging
+  console.log('SettingsDrawer render:', { isOpen, mounted });
 
 
   const themeOptions = [
@@ -41,7 +45,7 @@ export function SettingsDrawer({ isOpen, onClose }: SettingsDrawerProps) {
   const currentTheme = themeOptions.find(option => option.value === theme) || themeOptions[0];
   const CurrentIcon = currentTheme.icon;
 
-  return (
+  return createPortal(
     <>
       {/* Backdrop */}
       <div 
@@ -50,8 +54,8 @@ export function SettingsDrawer({ isOpen, onClose }: SettingsDrawerProps) {
       />
       
       {/* Drawer */}
-      <div className="fixed inset-x-0 bottom-0 z-[101] bg-background border-t shadow-lg">
-        <div className="flex flex-col h-screen">
+      <div className="fixed inset-0 z-[101] bg-background shadow-lg">
+        <div className="flex flex-col h-full">
           {/* Header */}
           <div className="flex items-center justify-between p-4 border-b">
             <h2 className="text-xl font-semibold">Settings</h2>
@@ -130,6 +134,7 @@ export function SettingsDrawer({ isOpen, onClose }: SettingsDrawerProps) {
           </div>
         </div>
       </div>
-    </>
+    </>,
+    document.body
   );
 }
