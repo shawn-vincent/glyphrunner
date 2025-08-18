@@ -18,13 +18,12 @@ import {
   ArrowDown,
   ArrowDownToLine,
   LoaderCircle,
-  PanelRightOpen,
-  PanelRightClose,
+  Menu,
   SquarePen,
 } from "lucide-react";
 import { useQueryState, parseAsBoolean } from "nuqs";
 import { StickToBottom, useStickToBottomContext } from "use-stick-to-bottom";
-import ThreadHistory from "./history";
+import SiteMenu from "./site-menu";
 import { toast } from "sonner";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { Label } from "../ui/label";
@@ -201,7 +200,7 @@ export function Thread() {
           }
         >
           <div className="relative h-full" style={{ width: 300 }}>
-            <ThreadHistory />
+            <SiteMenu />
           </div>
         </motion.div>
       </div>
@@ -230,15 +229,11 @@ export function Thread() {
             <div>
               {(!chatHistoryOpen || !isLargeScreen) && (
                 <TooltipIconButton
-                  tooltip={chatHistoryOpen ? "Close sidebar" : "Open sidebar"}
+                  tooltip="Open sidebar"
                   variant="ghost"
                   onClick={() => setChatHistoryOpen((p) => !p)}
                 >
-                  {chatHistoryOpen ? (
-                    <PanelRightOpen className="size-5" />
-                  ) : (
-                    <PanelRightClose className="size-5" />
-                  )}
+                  <Menu className="size-5" />
                 </TooltipIconButton>
               )}
             </div>
@@ -253,35 +248,15 @@ export function Thread() {
               <div className="absolute left-0 z-10">
                 {(!chatHistoryOpen || !isLargeScreen) && (
                   <TooltipIconButton
-                    tooltip={chatHistoryOpen ? "Close sidebar" : "Open sidebar"}
+                    tooltip="Open sidebar"
                     variant="ghost"
                     onClick={() => setChatHistoryOpen((p) => !p)}
                   >
-                    {chatHistoryOpen ? (
-                      <PanelRightOpen className="size-5" />
-                    ) : (
-                      <PanelRightClose className="size-5" />
-                    )}
+                    <Menu className="size-5" />
                   </TooltipIconButton>
                 )}
               </div>
-              <motion.button
-                className="flex gap-2 items-center cursor-pointer"
-                onClick={() => setThreadId(null)}
-                animate={{
-                  marginLeft: !chatHistoryOpen ? 48 : 0,
-                }}
-                transition={{
-                  type: "spring",
-                  stiffness: 300,
-                  damping: 30,
-                }}
-              >
-                <LangGraphLogoSVG width={32} height={32} />
-                <span className="text-xl font-semibold tracking-tight">
-                  glyphrunner.ai
-                </span>
-              </motion.button>
+              <div></div>
             </div>
 
             <div className="flex items-center gap-4">
