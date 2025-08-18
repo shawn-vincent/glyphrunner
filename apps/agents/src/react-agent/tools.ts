@@ -5,61 +5,28 @@
 import { TavilySearch } from "@langchain/tavily";
 
 /**
- * Wrapper class to add detailed logging to TavilySearch tool
+ * Wrapper class to add detailed logging to TavilySearch tool  
+ * Uses the latest LangGraph patterns for optimal compatibility
  */
 class LoggingTavilySearch extends TavilySearch {
-  
-  private formatSearchResults(result: any): string {
-    const { query, results, answer } = result;
-    let formatted = `Search Query: ${query}\n\n`;
-    
-    if (answer) {
-      formatted += `Answer: ${answer}\n\n`;
-    }
-    
-    if (results && results.length > 0) {
-      formatted += "Search Results:\n";
-      results.forEach((item: any, index: number) => {
-        formatted += `${index + 1}. ${item.title || "No title"}\n`;
-        formatted += `   URL: ${item.url}\n`;
-        if (item.content) {
-          formatted += `   Content: ${item.content.substring(0, 200)}${item.content.length > 200 ? "..." : ""}\n`;
-        }
-        formatted += "\n";
-      });
-    }
-    
-    return formatted;
-  }
   
   async invoke(input: any): Promise<string> {
     console.log("🔍 TavilySearch.invoke received input:");
     console.log("  Type:", typeof input);
     console.log("  Value:", JSON.stringify(input, null, 2));
-    console.log("  Schema expected:", JSON.stringify(this.schema, null, 2));
     
     try {
       const result = await super.invoke(input);
       console.log("✅ TavilySearch.invoke successful result:");
       console.log("  Type:", typeof result);
-      console.log("  Raw result:", JSON.stringify(result, null, 2).substring(0, 300) + "...");
+      console.log("  Length:", typeof result === 'string' ? result.length : 'N/A');
+      console.log("  Preview:", typeof result === 'string' ? result.substring(0, 200) + "..." : JSON.stringify(result).substring(0, 200) + "...");
       
-      // Convert object result to string for LangGraph compatibility
-      if (typeof result === 'object') {
-        const formattedResult = this.formatSearchResults(result);
-        console.log("  Converted to string, length:", formattedResult.length);
-        console.log("  Preview:", formattedResult.substring(0, 200) + "...");
-        return formattedResult;
-      } else {
-        console.log("  Already string, length:", (result as string).length);
-        console.log("  Preview:", (result as string).substring(0, 200) + "...");
-        return result as string;
-      }
+      return result;
     } catch (error) {
       console.error("❌ TavilySearch.invoke failed:");
       console.error("  Error:", error);
       console.error("  Error message:", error instanceof Error ? error.message : String(error));
-      console.error("  Error stack:", error instanceof Error ? error.stack : "No stack");
       console.error("  Input that caused error:", JSON.stringify(input, null, 2));
       throw error;
     }
@@ -75,10 +42,9 @@ function getAvailableTools() {
 
   // Only add Tavily search if API key is available
   if (process.env.TAVILY_API_KEY) {
-    console.info("🔍 Adding Tavily search tool");
+    console.info("🔍 Adding Tavily search tool (TavilySearch)");
     const searchTavily = new LoggingTavilySearch({
       maxResults: 3,
-      name: "web_search",
     });
     tools.push(searchTavily);
   } else {

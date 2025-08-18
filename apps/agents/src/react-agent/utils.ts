@@ -32,7 +32,14 @@ export async function loadChatModel(
       // The model should be the part after "openrouter/" (e.g., "provider/model-name")
       console.info("🔀 OpenRouter routing - using model:", model, "with provider: openai");
       return await initChatModel(model, { modelProvider: "openai" });
-    } else {
+    } 
+    // Handle Google models specially
+    else if (provider === "google") {
+      // For Google models, use the google-genai provider
+      console.info("🟢 Google Gemini routing - using model:", model, "with provider: google-genai");
+      return await initChatModel(model, { modelProvider: "google-genai" });
+    } 
+    else {
       console.info("🎯 Direct provider routing - using model:", model, "with provider:", provider);
       return await initChatModel(model, { modelProvider: provider });
     }

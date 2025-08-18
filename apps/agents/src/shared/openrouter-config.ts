@@ -98,8 +98,19 @@ export const OPENROUTER_MODELS = {
   "openrouter/openai/gpt-4-turbo": "openai/gpt-4-turbo",
   "openrouter/openai/gpt-3.5-turbo": "openai/gpt-3.5-turbo",
   
+  // Google Gemini models via OpenRouter
+  "openrouter/google/gemini-pro": "google/gemini-pro",
+  "openrouter/google/gemini-flash-1.5": "google/gemini-flash-1.5",
+  "openrouter/google/gemini-flash-1.5-8b": "google/gemini-flash-1.5-8b",
+  
+  // Native Google Gemini models (using GEMINI_API_KEY)
+  "google/gemini-2.5-flash": "gemini-2.5-flash", // Best price-performance, well-rounded capabilities (recommended)
+  "google/gemini-2.5-pro": "gemini-2.5-pro", // Most powerful but very limited free tier (5 RPM, 25/day)
+  "google/gemini-2.0-flash-exp": "gemini-2.0-flash-exp",
+  "google/gemini-1.5-pro": "gemini-1.5-pro",
+  "google/gemini-1.5-flash": "gemini-1.5-flash",
+  
   // Other popular models via OpenRouter
   "openrouter/meta-llama/llama-3.2-90b-instruct": "meta-llama/llama-3.2-90b-instruct",
-  "openrouter/google/gemini-pro": "google/gemini-pro",
   "openrouter/mistralai/mistral-7b-instruct": "mistralai/mistral-7b-instruct",
 } as const;

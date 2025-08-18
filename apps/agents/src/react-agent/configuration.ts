@@ -28,6 +28,6 @@ export function ensureConfiguration(
   return {
     systemPromptTemplate:
       configurable.systemPromptTemplate ?? SYSTEM_PROMPT_TEMPLATE,
-    model: configurable.model ?? DEFAULT_MODEL, // Free model with reliable tool support via OpenRouter
+    model: configurable.model ?? process.env.DEFAULT_AGENT_MODEL ?? DEFAULT_MODEL, // Free model with reliable tool support via OpenRouter
   };
 }
