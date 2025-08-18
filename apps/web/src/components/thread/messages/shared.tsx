@@ -7,6 +7,7 @@ import {
   CopyCheck,
   ChevronLeft,
   ChevronRight,
+  GitBranch,
 } from "lucide-react";
 import { TooltipIconButton } from "../tooltip-icon-button";
 import { AnimatePresence, motion } from "framer-motion";
@@ -78,36 +79,43 @@ export function BranchSwitcher({
   const index = branchOptions.indexOf(branch);
 
   return (
-    <div className="flex items-center gap-2">
-      <Button
+    <div className="flex items-center gap-1">
+      <TooltipIconButton
+        tooltip="Previous Branch"
         variant="ghost"
-        size="icon"
+        size="sm"
         className="size-6 p-1"
         onClick={() => {
           const prevBranch = branchOptions[index - 1];
           if (!prevBranch) return;
           onSelect(prevBranch);
         }}
-        disabled={isLoading}
+        disabled={isLoading || index === 0}
       >
         <ChevronLeft className="text-foreground size-4" />
-      </Button>
-      <span className="text-sm">
-        {index + 1} / {branchOptions.length}
-      </span>
-      <Button
+      </TooltipIconButton>
+      
+      <div className="flex items-center gap-1">
+        <GitBranch className="text-foreground size-3" />
+        <span className="text-sm">
+          {index + 1}/{branchOptions.length}
+        </span>
+      </div>
+      
+      <TooltipIconButton
+        tooltip="Next Branch"
         variant="ghost"
-        size="icon"
+        size="sm"
         className="size-6 p-1"
         onClick={() => {
           const nextBranch = branchOptions[index + 1];
           if (!nextBranch) return;
           onSelect(nextBranch);
         }}
-        disabled={isLoading}
+        disabled={isLoading || index === branchOptions.length - 1}
       >
         <ChevronRight className="text-foreground size-4" />
-      </Button>
+      </TooltipIconButton>
     </div>
   );
 }
@@ -175,7 +183,7 @@ export function CommandBar({
         </TooltipIconButton>
         <TooltipIconButton
           disabled={isLoading}
-          tooltip="Submit"
+          tooltip="Create New Branch"
           variant="secondary"
           onClick={handleSubmitEdit}
         >

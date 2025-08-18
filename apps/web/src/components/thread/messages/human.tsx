@@ -124,7 +124,7 @@ export function HumanMessage({
   }
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col group">
       <MessageBubble
         type="user"
         content={contentString}
@@ -133,8 +133,10 @@ export function HumanMessage({
       
       <div
         className={cn(
-          "flex gap-2 items-center ml-auto mr-8 transition-opacity",
-          "opacity-0 group-focus-within:opacity-100 group-hover:opacity-100",
+          "flex gap-2 items-center ml-auto transition-opacity",
+          meta?.branchOptions && meta.branchOptions.length > 1 
+            ? "opacity-100" 
+            : "opacity-0 group-focus-within:opacity-100 group-hover:opacity-100",
         )}
       >
         <BranchSwitcher

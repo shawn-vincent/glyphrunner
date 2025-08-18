@@ -161,7 +161,7 @@ export function AssistantMessage({
   }
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col group">
       {contentString.length > 0 && (
         <MessageBubble
           type="assistant"
@@ -213,7 +213,9 @@ export function AssistantMessage({
       <div
         className={cn(
           "flex gap-2 items-center mr-8 transition-opacity",
-          "opacity-0 group-focus-within:opacity-100 group-hover:opacity-100",
+          meta?.branchOptions && meta.branchOptions.length > 1 
+            ? "opacity-100" 
+            : "opacity-0 group-focus-within:opacity-100 group-hover:opacity-100",
         )}
       >
         <BranchSwitcher

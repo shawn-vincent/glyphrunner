@@ -17,6 +17,7 @@ import { TooltipIconButton } from "./tooltip-icon-button";
 import {
   ArrowDown,
   ArrowDownToLine,
+  ArrowUp,
   LoaderCircle,
   Menu,
   SquarePen,
@@ -339,7 +340,7 @@ export function Thread() {
               <div className="relative border-user-bubble-border bg-user-bubble rounded-3xl border-2 shadow-xs z-50">
                 <form
                   onSubmit={handleSubmit}
-                  className="grid grid-rows-[1fr_auto] gap-2 max-w-3xl mx-auto"
+                  className="flex items-end gap-2 p-3 max-w-3xl mx-auto"
                 >
                   <textarea
                     value={input}
@@ -358,26 +359,30 @@ export function Thread() {
                       }
                     }}
                     placeholder="Type your message..."
-                    className="p-3.5 pb-0 border-none bg-transparent field-sizing-content shadow-none ring-0 outline-none focus:outline-none focus:ring-0 resize-none"
+                    className="flex-1 border-none bg-transparent field-sizing-content shadow-none ring-0 outline-none focus:outline-none focus:ring-0 resize-none min-h-[20px] max-h-32"
                   />
 
-                  <div className="flex items-center justify-end p-2 pt-4">
-                    {stream.isLoading ? (
-                      <Button key="stop" onClick={() => stream.stop()}>
-                        <LoaderCircle className="w-4 h-4 animate-spin" />
-                        Cancel
-                      </Button>
-                    ) : (
-                      <Button
-                        type="submit"
-                        variant="primary"
-                        className="transition-all shadow-md"
-                        disabled={isLoading || !input.trim()}
-                      >
-                        Send
-                      </Button>
-                    )}
-                  </div>
+                  {stream.isLoading ? (
+                    <TooltipIconButton
+                      key="stop"
+                      tooltip="Cancel"
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => stream.stop()}
+                    >
+                      <LoaderCircle className="w-4 h-4 animate-spin" />
+                    </TooltipIconButton>
+                  ) : (
+                    <TooltipIconButton
+                      type="submit"
+                      tooltip="Send"
+                      variant="primary"
+                      size="sm"
+                      disabled={isLoading || !input.trim()}
+                    >
+                      <ArrowUp className="w-4 h-4" />
+                    </TooltipIconButton>
+                  )}
                 </form>
               </div>
             </div>
