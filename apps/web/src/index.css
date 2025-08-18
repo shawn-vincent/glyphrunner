@@ -38,9 +38,9 @@
   --sidebar-accent-foreground: theme('colors.white');
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.87 0 0);
-  --user-bubble: color-mix(in srgb, theme('colors.purple.500') 10%, transparent);
+  --user-bubble: rgba(245, 243, 255, 0.5);
   --user-bubble-border: var(--accent);
-  --assistant-bubble: color-mix(in srgb, theme('colors.green.500') 10%, transparent);
+  --assistant-bubble: rgba(240, 253, 244, 0.5);
   --assistant-bubble-border: theme('colors.green.500');
 }
 
@@ -77,9 +77,9 @@
   --sidebar-accent-foreground: theme('colors.white');
   --sidebar-border: oklch(0.269 0 0);
   --sidebar-ring: oklch(0.439 0 0);
-  --user-bubble: color-mix(in srgb, theme('colors.purple.600') 25%, transparent);
+  --user-bubble: rgba(88, 28, 135, 0.75);
   --user-bubble-border: var(--accent);
-  --assistant-bubble: color-mix(in srgb, theme('colors.green.500') 25%, transparent);
+  --assistant-bubble: rgba(21, 128, 61, 0.75);
   --assistant-bubble-border: theme('colors.green.500');
 }
 

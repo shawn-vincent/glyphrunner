@@ -49,7 +49,7 @@ export function MessageBubble({
   );
   
   const bubbleClass = cn(
-    "px-4 py-2 rounded-3xl border-2 w-fit whitespace-pre-wrap text-foreground",
+    "px-4 py-2 rounded-3xl border-2 w-fit whitespace-pre-wrap text-foreground backdrop-blur-sm",
     isUser 
       ? "border-user-bubble-border bg-user-bubble"
       : isTool
