@@ -28,7 +28,6 @@ import { toast } from "sonner";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { Label } from "../ui/label";
 import { Switch } from "../ui/switch";
-import { ThemeToggle } from "../ui/theme-toggle";
 
 function StickyToBottomContent(props: {
   content: ReactNode;
@@ -237,9 +236,6 @@ export function Thread() {
                 </TooltipIconButton>
               )}
             </div>
-            <div className="absolute top-2 right-4 flex items-center gap-2">
-              <ThemeToggle />
-            </div>
           </div>
         )}
         {chatStarted && (
@@ -260,9 +256,6 @@ export function Thread() {
             </div>
 
             <div className="flex items-center gap-4">
-              <div className="flex items-center gap-2">
-                <ThemeToggle />
-              </div>
               <TooltipIconButton
                 size="lg"
                 className="p-4"

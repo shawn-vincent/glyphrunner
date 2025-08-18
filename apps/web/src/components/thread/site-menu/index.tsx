@@ -11,6 +11,7 @@ import { X, Settings } from "lucide-react";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { TooltipIconButton } from "../tooltip-icon-button";
 import { ScrollingThreadList } from "./scrolling-thread-list";
+import { SettingsDrawer } from "./settings-drawer";
 
 
 
@@ -18,6 +19,10 @@ export default function SiteMenu() {
   const isLargeScreen = useMediaQuery("(min-width: 1024px)");
   const [chatHistoryOpen, setChatHistoryOpen] = useQueryState(
     "chatHistoryOpen",
+    parseAsBoolean.withDefault(false),
+  );
+  const [settingsOpen, setSettingsOpen] = useQueryState(
+    "settingsOpen",
     parseAsBoolean.withDefault(false),
   );
 
@@ -53,7 +58,7 @@ export default function SiteMenu() {
             <TooltipIconButton
               tooltip="Settings"
               variant="ghost"
-              onClick={() => {/* TODO: implement settings */}}
+              onClick={() => setSettingsOpen(true)}
             >
               <Settings className="size-5" />
             </TooltipIconButton>
@@ -90,7 +95,7 @@ export default function SiteMenu() {
                 <TooltipIconButton
                   tooltip="Settings"
                   variant="ghost"
-                  onClick={() => {/* TODO: implement settings */}}
+                  onClick={() => setSettingsOpen(true)}
                 >
                   <Settings className="size-5" />
                 </TooltipIconButton>
@@ -106,6 +111,12 @@ export default function SiteMenu() {
           </SheetContent>
         </Sheet>
       </div>
+      
+      {/* Settings Drawer */}
+      <SettingsDrawer 
+        isOpen={settingsOpen} 
+        onClose={() => setSettingsOpen(false)} 
+      />
     </>
   );
 }
