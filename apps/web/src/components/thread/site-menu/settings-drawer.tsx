@@ -4,6 +4,9 @@ import { X, Monitor, Sun, Moon, ChevronDown, Check } from "lucide-react";
 import { useTheme } from "next-themes";
 import { TooltipIconButton } from "../tooltip-icon-button";
 import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { useQueryState, parseAsBoolean } from "nuqs";
 
 interface SettingsDrawerProps {
   isOpen: boolean;
@@ -14,10 +17,10 @@ export function SettingsDrawer({ isOpen, onClose }: SettingsDrawerProps) {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-
-  // Debug logging
-  console.log('SettingsDrawer render:', { isOpen, mounted });
-
+  const [hideToolCalls, setHideToolCalls] = useQueryState(
+    "hideToolCalls",
+    parseAsBoolean.withDefault(false),
+  );
 
   const themeOptions = [
     { value: "system", label: "System", icon: Monitor },
@@ -123,11 +126,19 @@ export function SettingsDrawer({ isOpen, onClose }: SettingsDrawerProps) {
                 </p>
               </div>
               
-              {/* Placeholder for future settings */}
-              <div className="space-y-2 opacity-50">
-                <label className="text-sm font-medium">More settings coming soon...</label>
+              {/* Hide Tool Calls Setting */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Hide Tool Calls</label>
+                <div className="flex items-center justify-between p-3 border rounded-md">
+                  <span className="text-sm">Hide tool call details from conversation</span>
+                  <Switch
+                    id="hide-tool-calls"
+                    checked={hideToolCalls ?? false}
+                    onCheckedChange={setHideToolCalls}
+                  />
+                </div>
                 <p className="text-xs text-muted-foreground">
-                  Additional configuration options will be added here.
+                  When enabled, tool call details are hidden from the conversation view.
                 </p>
               </div>
             </div>
