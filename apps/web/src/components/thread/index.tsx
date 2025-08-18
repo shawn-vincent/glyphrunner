@@ -307,10 +307,9 @@ export function Thread() {
           <StickyToBottomContent
             className={cn(
               "absolute px-4 inset-0 overflow-y-scroll [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-track]:bg-transparent",
-              !chatStarted && "flex flex-col items-stretch mt-[25vh]",
-              chatStarted && "pb-24", // Add padding for bottom bar
+              !chatStarted && "flex flex-col items-stretch mt-[25vh]"
             )}
-            contentClassName="pt-8 pb-16 max-w-3xl mx-auto flex flex-col gap-4 w-full"
+            contentClassName="pt-8 pb-4 max-w-3xl mx-auto flex flex-col gap-2 w-full"
             content={
               <>
                 {!chatStarted && (

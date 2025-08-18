@@ -161,7 +161,7 @@ export function AssistantMessage({
   }
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col">
       {contentString.length > 0 && (
         <MessageBubble
           type="assistant"

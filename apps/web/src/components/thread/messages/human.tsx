@@ -124,7 +124,7 @@ export function HumanMessage({
   }
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col">
       <MessageBubble
         type="user"
         content={contentString}
