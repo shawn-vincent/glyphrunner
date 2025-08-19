@@ -64,7 +64,7 @@ export function MessageBubble({
         <div className={pillContainer}>
           {isUser ? (
             <>
-              <span className="text-xs text-muted-foreground">{timestamp}</span>
+              <span className="text-xs text-muted-foreground text-shadow-glow">{timestamp}</span>
               <div className={pillClass}>
                 <span className="text-xs font-medium text-foreground">user</span>
               </div>
@@ -75,14 +75,14 @@ export function MessageBubble({
                 <Wrench className="w-3 h-3" />
                 <span className="text-xs font-medium text-foreground ml-1">{toolName || "tool"}</span>
               </div>
-              <span className="text-xs text-muted-foreground">{timestamp}</span>
+              <span className="text-xs text-muted-foreground text-shadow-glow">{timestamp}</span>
             </>
           ) : (
             <>
               <div className={pillClass}>
                 <span className="text-xs font-medium text-foreground">assistant</span>
               </div>
-              <span className="text-xs text-muted-foreground">{timestamp}</span>
+              <span className="text-xs text-muted-foreground text-shadow-glow">{timestamp}</span>
             </>
           )}
         </div>

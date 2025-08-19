@@ -192,4 +192,18 @@
   .dark .scroll-shadows::after {
     background: linear-gradient(270deg, rgba(0,0,0,0.7), transparent);
   }
+
+  .text-shadow-glow {
+    text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.8), 
+                 1px -1px 0 rgba(0, 0, 0, 0.8), 
+                 -1px 1px 0 rgba(0, 0, 0, 0.8), 
+                 1px 1px 0 rgba(0, 0, 0, 0.8);
+  }
+
+  .dark .text-shadow-glow {
+    text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.8), 
+                 1px -1px 0 rgba(0, 0, 0, 0.8), 
+                 -1px 1px 0 rgba(0, 0, 0, 0.8), 
+                 1px 1px 0 rgba(0, 0, 0, 0.8);
+  }
 }

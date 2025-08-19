@@ -114,7 +114,7 @@ export function HumanMessage({
       <div className={cn("flex flex-col items-end ml-auto gap-1 group ml-8 w-full max-w-xl")}>
         {/* User pill and timestamp for editing mode */}
         <div className="flex items-center gap-2">
-          <span className="text-xs text-muted-foreground">{timestamp}</span>
+          <span className="text-xs text-muted-foreground text-shadow-glow">{timestamp}</span>
           <div className="inline-flex items-center px-2 py-1 rounded-full border-2 border-user-bubble-border bg-user-bubble">
             <span className="text-xs font-medium text-foreground">user</span>
           </div>

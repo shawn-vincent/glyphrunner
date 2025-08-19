@@ -61,9 +61,9 @@ function updateCSSVariables(primaryColor: string, complementaryColor: string) {
     root.style.setProperty('--sidebar-accent', `rgb(${primaryColors[600]})`);
     root.style.setProperty('--user-bubble-border', `rgb(${primaryColors[600]})`);
     
-    // Dark mode bubble backgrounds (increased opacity for better visibility)
-    root.style.setProperty('--user-bubble', `rgba(${primaryColors[900]}, 0.9)`);
-    root.style.setProperty('--assistant-bubble', `rgba(${complementaryColors[800]}, 0.9)`);
+    // Dark mode bubble backgrounds (reduced opacity for more transparency)
+    root.style.setProperty('--user-bubble', `rgba(${primaryColors[900]}, 0.7)`);
+    root.style.setProperty('--assistant-bubble', `rgba(${complementaryColors[800]}, 0.7)`);
   } else {
     // Light mode
     root.style.setProperty('--primary', `rgb(${primaryColors[500]})`);
@@ -71,9 +71,9 @@ function updateCSSVariables(primaryColor: string, complementaryColor: string) {
     root.style.setProperty('--sidebar-accent', `rgb(${primaryColors[500]})`);
     root.style.setProperty('--user-bubble-border', `rgb(${primaryColors[500]})`);
     
-    // Light mode bubble backgrounds (increased opacity for better visibility)
-    root.style.setProperty('--user-bubble', `rgba(${primaryColors[50]}, 0.8)`);
-    root.style.setProperty('--assistant-bubble', `rgba(${complementaryColors[50]}, 0.8)`);
+    // Light mode bubble backgrounds (reduced opacity for more transparency)
+    root.style.setProperty('--user-bubble', `rgba(${primaryColors[50]}, 0.6)`);
+    root.style.setProperty('--assistant-bubble', `rgba(${complementaryColors[50]}, 0.6)`);
   }
   
   // Update complementary colors (same for both modes)

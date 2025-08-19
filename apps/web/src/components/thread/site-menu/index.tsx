@@ -46,7 +46,7 @@ export default function SiteMenu() {
               >
                 <X className="size-5" />
               </TooltipIconButton>
-              <h1 className="text-xl text-cyan-400 ml-3" style={{ fontFamily: 'Zen Dots, cursive' }}>
+              <h1 className="text-xl ml-3" style={{ fontFamily: 'Zen Dots, cursive', color: 'var(--accent)' }}>
                 glyphrunner.ai
               </h1>
             </div>
@@ -83,7 +83,7 @@ export default function SiteMenu() {
                   >
                     <X className="size-5" />
                   </TooltipIconButton>
-                  <h1 className="text-xl text-cyan-400 ml-3" style={{ fontFamily: 'Zen Dots, cursive' }}>
+                  <h1 className="text-xl ml-3" style={{ fontFamily: 'Zen Dots, cursive', color: 'var(--accent)' }}>
                     glyphrunner.ai
                   </h1>
                 </div>

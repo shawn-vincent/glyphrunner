@@ -8,6 +8,7 @@
     "dev": "npx @langchain/langgraph-cli dev --port 2024 --config ../../langgraph.json",
     "build": "turbo build:internal --filter=agents",
     "build:internal": "npm run clean && tsc",
+    "typecheck": "tsc --noEmit",
     "clean": "rm -rf ./dist .turbo || true",
     "format": "prettier --config .prettierrc --write \"src\"",
     "lint": "eslint src",

@@ -78,7 +78,7 @@ export function BranchSwitcher({
   const index = branchOptions.indexOf(branch);
 
   return (
-    <div className="flex items-center gap-1">
+    <div className="flex items-center gap-1 bg-background/90 backdrop-blur-sm rounded-md px-2 py-1">
       <TooltipIconButton
         tooltip="Previous Branch"
         variant="ghost"
@@ -169,7 +169,7 @@ export function CommandBar({
 
   if (isHumanMessage && isEditing && !!setIsEditing && !!handleSubmitEdit) {
     return (
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 bg-background/90 backdrop-blur-sm rounded-md px-2 py-1">
         <TooltipIconButton
           disabled={isLoading}
           tooltip="Cancel edit"
@@ -193,7 +193,7 @@ export function CommandBar({
   }
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-2 bg-background/90 backdrop-blur-sm rounded-md px-2 py-1">
       <ContentCopyable content={content} disabled={isLoading} />
       {isAiMessage && !!handleRegenerate && (
         <TooltipIconButton

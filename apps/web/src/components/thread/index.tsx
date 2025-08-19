@@ -98,6 +98,17 @@ export function Thread() {
 
   const lastError = useRef<string | undefined>(undefined);
 
+  // Load background image from localStorage on mount
+  useEffect(() => {
+    const savedBackgroundUrl = localStorage.getItem("backgroundImageUrl");
+    if (savedBackgroundUrl) {
+      document.documentElement.style.setProperty(
+        "--background-image-url", 
+        `url('${savedBackgroundUrl}')`
+      );
+    }
+  }, []);
+
   useEffect(() => {
     if (!stream.error) {
       lastError.current = undefined;
@@ -290,7 +301,16 @@ export function Thread() {
           </div>
         )}
 
-        <StickToBottom className="relative flex-1 overflow-hidden">
+        <StickToBottom 
+          className="relative flex-1 overflow-hidden"
+          style={{
+            backgroundImage: "var(--background-image-url, none)",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+            backgroundAttachment: "fixed"
+          }}
+        >
           <StickyToBottomContent
             className={cn(
               "absolute px-4 inset-0 overflow-y-scroll [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-track]:bg-transparent",
@@ -415,7 +435,7 @@ export function Thread() {
                       }
                     }}
                     onPaste={handlePaste}
-                    placeholder="Type your message or paste files..."
+                    placeholder="Type your message"
                     className="flex-1 border-none bg-transparent field-sizing-content shadow-none ring-0 outline-none focus:outline-none focus:ring-0 resize-none min-h-[20px] max-h-32"
                   />
 
