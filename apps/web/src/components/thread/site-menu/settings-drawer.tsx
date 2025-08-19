@@ -21,7 +21,7 @@ export function SettingsDrawer({ isOpen, onClose }: SettingsDrawerProps) {
     "hideToolCalls",
     parseAsBoolean.withDefault(false),
   );
-  const [accentColor, setAccentColor] = useState("#3b82f6");
+  const [accentColor, setAccentColor] = useState("#a855f7");
 
   const themeOptions = [
     { value: "system", label: "System", icon: Monitor },
