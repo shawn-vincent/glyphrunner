@@ -6,6 +6,7 @@ import { TooltipIconButton } from "../tooltip-icon-button";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { ColorPicker } from "../color-picker";
 import { useQueryState, parseAsBoolean } from "nuqs";
 
 interface SettingsDrawerProps {
@@ -21,6 +22,7 @@ export function SettingsDrawer({ isOpen, onClose }: SettingsDrawerProps) {
     "hideToolCalls",
     parseAsBoolean.withDefault(false),
   );
+  const [accentColor, setAccentColor] = useState("#3b82f6");
 
   const themeOptions = [
     { value: "system", label: "System", icon: Monitor },
@@ -124,6 +126,16 @@ export function SettingsDrawer({ isOpen, onClose }: SettingsDrawerProps) {
                 <p className="text-xs text-muted-foreground">
                   Choose how the interface appears. System follows your device settings.
                 </p>
+              </div>
+              
+              {/* Color Setting */}
+              <div className="space-y-2">
+                <ColorPicker
+                  label="Accent Color"
+                  value={accentColor}
+                  onChange={setAccentColor}
+                  description="Choose your preferred accent color for the interface."
+                />
               </div>
               
               {/* Hide Tool Calls Setting */}
