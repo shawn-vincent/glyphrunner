@@ -5,7 +5,6 @@ import { useTheme } from "next-themes";
 import { TooltipIconButton } from "../tooltip-icon-button";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
 import { ColorPicker } from "../color-picker";
 import { useQueryState, parseAsBoolean } from "nuqs";
 

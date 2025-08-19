@@ -4,8 +4,6 @@ import { useQueryState, parseAsBoolean } from "nuqs";
 import {
   Sheet,
   SheetContent,
-  SheetHeader,
-  SheetTitle,
 } from "@/components/ui/sheet";
 import { X, Settings } from "lucide-react";
 import { useMediaQuery } from "@/hooks/useMediaQuery";

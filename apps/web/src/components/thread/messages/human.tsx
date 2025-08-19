@@ -6,6 +6,8 @@ import { cn } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
 import { BranchSwitcher, CommandBar } from "./shared";
 import { MessageBubble } from "./message-bubble";
+import { MultimodalPreview } from "../multimodal-preview";
+import type { Base64ContentBlock } from "@langchain/core/messages";
 
 function EditableContent({
   value,
@@ -30,6 +32,36 @@ function EditableContent({
       onKeyDown={handleKeyDown}
       className="focus-visible:ring-0"
     />
+  );
+}
+
+function renderMultimodalContent(content: Message["content"]) {
+  if (typeof content === "string") {
+    return content;
+  }
+
+  const textParts = content.filter((c: any): c is { type: "text"; text: string } => c.type === "text");
+  const contentBlocks = content.filter((c: any): c is Base64ContentBlock => 
+    c.type === "image" || c.source_type === "base64"
+  );
+
+  return (
+    <div className="flex flex-col gap-2">
+      {textParts.length > 0 && (
+        <div>{textParts.map(part => part.text).join(" ")}</div>
+      )}
+      {contentBlocks.length > 0 && (
+        <div className="flex flex-wrap gap-2">
+          {contentBlocks.map((block: any, index: number) => (
+            <MultimodalPreview
+              key={index}
+              block={block as Base64ContentBlock}
+              size="md"
+            />
+          ))}
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -127,7 +159,7 @@ export function HumanMessage({
     <div className="flex flex-col group">
       <MessageBubble
         type="user"
-        content={contentString}
+        content={renderMultimodalContent(message.content)}
         timestamp={timestamp}
       />
       

@@ -101,7 +101,7 @@ export function AssistantMessage({
           msg.type === "tool" && 
           "tool_call_id" in msg && 
           msg.tool_call_id === toolCall.id
-      ) as ToolMessage | undefined;
+      ) as any;
       
       return { toolCall, toolResult };
     });
@@ -117,11 +117,11 @@ export function AssistantMessage({
     "tool_calls" in message &&
     message.tool_calls &&
     message.tool_calls.length > 0;
-  const toolCallsHaveContents =
-    hasToolCalls &&
-    message.tool_calls?.some(
-      (tc) => tc.args && Object.keys(tc.args).length > 0,
-    );
+  // const toolCallsHaveContents =
+  //   hasToolCalls &&
+  //   message.tool_calls?.some(
+  //     (tc) => tc.args && Object.keys(tc.args).length > 0,
+  //   );
   const hasAnthropicToolCalls = !!anthropicStreamedToolCalls?.length;
   const isToolResult = message?.type === "tool";
 
@@ -136,7 +136,7 @@ export function AssistantMessage({
       (msg) => 
         msg.type === "ai" && 
         "tool_calls" in msg && 
-        msg.tool_calls?.some(tc => tc.id === (message as ToolMessage).tool_call_id)
+        msg.tool_calls?.some(tc => tc.id === (message as any).tool_call_id)
     );
     
     // If we found the corresponding AI message, don't render this tool result separately
@@ -155,7 +155,8 @@ export function AssistantMessage({
   if (isToolResult) {
     return (
       <div className="flex items-start mr-auto gap-2 group">
-        <ToolResult message={message} />
+        {/* <ToolResult message={message} /> */}
+        <div>Tool result rendered here</div>
       </div>
     );
   }

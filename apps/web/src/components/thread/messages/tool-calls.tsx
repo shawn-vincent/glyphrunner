@@ -1,4 +1,4 @@
-import { AIMessage, ToolMessage } from "@langchain/langgraph-sdk";
+import { AIMessage } from "@langchain/langgraph-sdk";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, ChevronUp } from "lucide-react";
@@ -15,8 +15,8 @@ export function ToolCallWithResult({
   toolCall, 
   toolResult 
 }: { 
-  toolCall: AIMessage["tool_calls"][0]; 
-  toolResult?: ToolMessage;
+  toolCall: NonNullable<AIMessage["tool_calls"]>[0]; 
+  toolResult?: any;
 }) {
   const [isExpanded, setIsExpanded] = useState(false);
   

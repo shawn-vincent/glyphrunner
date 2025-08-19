@@ -15,20 +15,20 @@ import {
 import { LangGraphLogoSVG } from "../icons/langgraph";
 import { TooltipIconButton } from "./tooltip-icon-button";
 import {
-  ArrowDown,
   ArrowDownToLine,
   ArrowUp,
   LoaderCircle,
   Menu,
   SquarePen,
+  Plus,
 } from "lucide-react";
 import { useQueryState, parseAsBoolean } from "nuqs";
 import { StickToBottom, useStickToBottomContext } from "use-stick-to-bottom";
 import SiteMenu from "./site-menu";
 import { toast } from "sonner";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
-import { Label } from "../ui/label";
-import { Switch } from "../ui/switch";
+import { useFileUpload } from "@/hooks/useFileUpload";
+import { MultimodalPreview } from "./multimodal-preview";
 
 function StickyToBottomContent(props: {
   content: ReactNode;
@@ -78,13 +78,19 @@ export function Thread() {
     "chatHistoryOpen",
     parseAsBoolean.withDefault(false),
   );
-  const [hideToolCalls, setHideToolCalls] = useQueryState(
-    "hideToolCalls",
-    parseAsBoolean.withDefault(false),
-  );
   const [input, setInput] = useState("");
   const [firstTokenReceived, setFirstTokenReceived] = useState(false);
   const isLargeScreen = useMediaQuery("(min-width: 1024px)");
+  
+  const {
+    contentBlocks,
+    handleFileUpload,
+    dropRef,
+    removeBlock,
+    resetBlocks,
+    dragOver,
+    handlePaste,
+  } = useFileUpload();
 
   const stream = useStreamContext();
   const messages = stream.messages;
@@ -136,13 +142,18 @@ export function Thread() {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    if (!input.trim() || isLoading) return;
+    if ((!input.trim() && contentBlocks.length === 0) || isLoading) return;
     setFirstTokenReceived(false);
+
+    // Create message content - can be string or array with content blocks
+    const messageContent = contentBlocks.length > 0 
+      ? [{ type: "text", text: input }, ...contentBlocks] as any
+      : input;
 
     const newHumanMessage: Message = {
       id: uuidv4(),
       type: "human",
-      content: input,
+      content: messageContent,
     };
 
     const toolMessages = ensureToolCallsHaveResponses(stream.messages);
@@ -162,6 +173,7 @@ export function Thread() {
     );
 
     setInput("");
+    resetBlocks();
   };
 
   const handleRegenerate = (
@@ -182,7 +194,13 @@ export function Thread() {
   );
 
   return (
-    <div className="flex w-full h-screen overflow-hidden">
+    <div 
+      ref={dropRef}
+      className={cn(
+        "flex w-full h-screen overflow-hidden transition-colors",
+        dragOver && "bg-accent/20"
+      )}
+    >
       <div className="relative lg:flex hidden">
         <motion.div
           className="absolute h-full border-r overflow-hidden z-20"
@@ -338,10 +356,48 @@ export function Thread() {
               
               {/* Compose dialog with 50% opacity on top */}
               <div className="relative border-user-bubble-border bg-user-bubble rounded-3xl border-2 shadow-xs z-50">
+                {/* File previews */}
+                {contentBlocks.length > 0 && (
+                  <div className="px-4 pt-3 pb-2">
+                    <div className="flex flex-wrap gap-2">
+                      {contentBlocks.map((block, index) => (
+                        <MultimodalPreview
+                          key={index}
+                          block={block}
+                          removable
+                          onRemove={() => removeBlock(index)}
+                          size="sm"
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )}
+                
                 <form
                   onSubmit={handleSubmit}
                   className="flex items-end gap-2 p-3 max-w-3xl mx-auto"
                 >
+                  {/* Hidden file input */}
+                  <input
+                    type="file"
+                    id="file-upload"
+                    className="hidden"
+                    multiple
+                    accept="image/jpeg,image/png,image/gif,image/webp,application/pdf"
+                    onChange={handleFileUpload}
+                  />
+                  
+                  {/* File upload button */}
+                  <TooltipIconButton
+                    type="button"
+                    tooltip="Upload files (images, PDFs)"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => document.getElementById('file-upload')?.click()}
+                  >
+                    <Plus className="w-4 h-4" />
+                  </TooltipIconButton>
+
                   <textarea
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
@@ -358,7 +414,8 @@ export function Thread() {
                         form?.requestSubmit();
                       }
                     }}
-                    placeholder="Type your message..."
+                    onPaste={handlePaste}
+                    placeholder="Type your message or paste files..."
                     className="flex-1 border-none bg-transparent field-sizing-content shadow-none ring-0 outline-none focus:outline-none focus:ring-0 resize-none min-h-[20px] max-h-32"
                   />
 
@@ -378,7 +435,7 @@ export function Thread() {
                       tooltip="Send"
                       variant="primary"
                       size="sm"
-                      disabled={isLoading || !input.trim()}
+                      disabled={isLoading || (!input.trim() && contentBlocks.length === 0)}
                     >
                       <ArrowUp className="w-4 h-4" />
                     </TooltipIconButton>
