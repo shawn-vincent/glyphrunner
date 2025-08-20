@@ -33,25 +33,39 @@ function getThreadSearchMetadata(
   }
 }
 
+// Default values for the thread provider (same as Stream provider)
+const DEFAULT_API_URL = "http://localhost:2024";
+const DEFAULT_ASSISTANT_ID = "agent";
+
 export function ThreadProvider({ children }: { children: ReactNode }) {
+  // Get environment variables
+  const envApiUrl: string | undefined = import.meta.env.VITE_API_URL;
+  const envAssistantId: string | undefined = import.meta.env.VITE_ASSISTANT_ID;
+
+  // Use URL params with env var and default fallbacks
   const [apiUrl] = useQueryState("apiUrl");
   const [assistantId] = useQueryState("assistantId");
+  
+  // Determine final values to use, prioritizing URL params then env vars then defaults
+  const finalApiUrl = apiUrl || envApiUrl || DEFAULT_API_URL;
+  const finalAssistantId = assistantId || envAssistantId || DEFAULT_ASSISTANT_ID;
+  
   const [threads, setThreads] = useState<Thread[]>([]);
   const [threadsLoading, setThreadsLoading] = useState(false);
 
   const getThreads = useCallback(async (): Promise<Thread[]> => {
-    if (!apiUrl || !assistantId) return [];
-    const client = createClient(apiUrl, getApiKey() ?? undefined);
+    if (!finalApiUrl || !finalAssistantId) return [];
+    const client = createClient(finalApiUrl, getApiKey() ?? undefined);
 
     const threads = await client.threads.search({
       metadata: {
-        ...getThreadSearchMetadata(assistantId),
+        ...getThreadSearchMetadata(finalAssistantId),
       },
       limit: 100,
     });
 
     return threads;
-  }, [apiUrl, assistantId]);
+  }, [finalApiUrl, finalAssistantId]);
 
   const value = {
     getThreads,
