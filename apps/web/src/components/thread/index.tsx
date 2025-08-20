@@ -58,10 +58,10 @@ function ScrollToBottom(props: { className?: string }) {
   if (isAtBottom) return null;
   return (
     <Button
-      variant="ghost"
+      variant="default"
       size="icon"
       className={cn(
-        "rounded-full w-12 h-12 shadow-lg hover:shadow-xl transition-all duration-200",
+        "rounded-full w-12 h-12 shadow-lg hover:shadow-xl transition-all duration-200 bg-accent text-accent-foreground hover:bg-accent/90",
         props.className
       )}
       onClick={() => scrollToBottom()}
