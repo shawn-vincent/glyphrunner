@@ -29,6 +29,7 @@ import { toast } from "sonner";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { useFileUpload } from "@/hooks/useFileUpload";
 import { MultimodalPreview } from "./multimodal-preview";
+// import { SafeAreaDebug } from "../SafeAreaDebug";
 
 function StickyToBottomContent(props: {
   content: ReactNode;
@@ -208,10 +209,11 @@ export function Thread() {
     <div 
       ref={dropRef}
       className={cn(
-        "flex w-full h-screen overflow-hidden transition-colors",
+        "flex w-full min-h-[100dvh] overflow-hidden transition-colors",
         dragOver && "bg-accent/20"
       )}
     >
+      {/* <SafeAreaDebug /> */}
       <div className="relative lg:flex hidden">
         <motion.div
           className="absolute h-full border-r overflow-hidden z-20"
@@ -254,7 +256,7 @@ export function Thread() {
         }
       >
         {!chatStarted && (
-          <div className="absolute top-0 left-0 w-full flex items-center justify-between gap-3 p-2 pl-4 z-10">
+          <div className="absolute top-0 left-0 w-full flex items-center justify-between gap-3 p-2 pl-4 pt-safe z-10">
             <div>
               {(!chatHistoryOpen || !isLargeScreen) && (
                 <TooltipIconButton
@@ -269,7 +271,7 @@ export function Thread() {
           </div>
         )}
         {chatStarted && (
-          <div className="flex items-center justify-between gap-3 p-2 z-10 relative">
+          <div className="flex items-center justify-between gap-3 p-2 pt-safe z-10 relative">
             <div className="flex items-center justify-start gap-2 relative">
               <div className="absolute left-0 z-10">
                 {(!chatHistoryOpen || !isLargeScreen) && (
@@ -313,7 +315,7 @@ export function Thread() {
         >
           <StickyToBottomContent
             className={cn(
-              "absolute px-4 inset-0 overflow-y-scroll [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-track]:bg-transparent",
+              "absolute px-safe inset-0 overflow-y-scroll overscroll-contain [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-track]:bg-transparent",
               !chatStarted && "flex flex-col items-stretch mt-[25vh]"
             )}
             contentClassName="pt-8 pb-4 max-w-3xl mx-auto flex flex-col gap-2 w-full"
@@ -366,10 +368,10 @@ export function Thread() {
         </StickToBottom>
 
         {/* Bottom Bar */}
-        <div className="relative border-t bg-background z-10">
+        <div className="relative border-t bg-background pb-safe z-10">
           <div className="absolute inset-x-0 bottom-full h-5 bg-gradient-to-t from-background to-background/0" />
           
-          <div className="p-4">
+          <div className="p-4 px-safe">
             <div className="relative mx-auto w-full max-w-3xl">
               {/* Background layer with 100% opacity */}
               <div className="absolute inset-0 bg-background rounded-3xl border-2 border-user-bubble-border shadow-xs z-40" />
