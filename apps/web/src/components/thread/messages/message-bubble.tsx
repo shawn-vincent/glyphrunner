@@ -40,12 +40,8 @@ export function MessageBubble({
   const pillContainer = "flex items-center gap-2";
   
   const pillClass = cn(
-    "inline-flex items-center px-2 py-1 rounded-full border-2",
-    isUser 
-      ? "border-user-bubble-border bg-user-bubble"
-      : isTool
-      ? "border-assistant-bubble-border bg-assistant-bubble"
-      : "border-assistant-bubble-border bg-assistant-bubble"
+    "inline-flex items-center gap-2 px-3 py-1 rounded-full",
+    "bg-white dark:bg-black border border-border"
   );
   
   const bubbleClass = cn(
@@ -60,30 +56,24 @@ export function MessageBubble({
   return (
     <div className={containerClass}>
       <div className={pillAndBubbleContainer}>
-        {/* Pill and timestamp */}
+        {/* Pill with username and timestamp */}
         <div className={pillContainer}>
           {isUser ? (
-            <>
-              <span className="text-xs text-muted-foreground text-shadow-glow">{timestamp}</span>
-              <div className={pillClass}>
-                <span className="text-xs font-medium text-foreground">user</span>
-              </div>
-            </>
+            <div className={pillClass}>
+              <span className="text-xs font-medium" style={{ color: 'var(--user-bubble-border)' }}>user</span>
+              <span className="text-xs text-muted-foreground/70">{timestamp}</span>
+            </div>
           ) : isTool ? (
-            <>
-              <div className={pillClass}>
-                <Wrench className="w-3 h-3" />
-                <span className="text-xs font-medium text-foreground ml-1">{toolName || "tool"}</span>
-              </div>
-              <span className="text-xs text-muted-foreground text-shadow-glow">{timestamp}</span>
-            </>
+            <div className={pillClass}>
+              <Wrench className="w-3 h-3" style={{ color: 'var(--user-bubble-border)' }} />
+              <span className="text-xs font-medium" style={{ color: 'var(--user-bubble-border)' }}>{toolName || "tool"}</span>
+              <span className="text-xs text-muted-foreground/70">{timestamp}</span>
+            </div>
           ) : (
-            <>
-              <div className={pillClass}>
-                <span className="text-xs font-medium text-foreground">assistant</span>
-              </div>
-              <span className="text-xs text-muted-foreground text-shadow-glow">{timestamp}</span>
-            </>
+            <div className={pillClass}>
+              <span className="text-xs font-medium" style={{ color: 'var(--assistant-bubble-border)' }}>assistant</span>
+              <span className="text-xs text-muted-foreground/70">{timestamp}</span>
+            </div>
           )}
         </div>
         

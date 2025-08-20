@@ -26,15 +26,15 @@ const COLOR_WHEEL: ColorConfig[] = [
 
 // Tailwind color values for dynamic CSS variable updates (comma-separated for rgba)
 const TAILWIND_COLORS = {
-  red: { 50: "254, 242, 242", 500: "239, 68, 68", 600: "220, 38, 38", 800: "153, 27, 27", 900: "127, 29, 29" },
-  orange: { 50: "255, 247, 237", 500: "249, 115, 22", 600: "234, 88, 12", 800: "154, 52, 18", 900: "124, 45, 18" },
-  yellow: { 50: "254, 252, 232", 500: "245, 158, 11", 600: "217, 119, 6", 800: "146, 64, 14", 900: "120, 53, 15" },
-  green: { 50: "240, 253, 244", 500: "34, 197, 94", 600: "22, 163, 74", 800: "22, 101, 52", 900: "20, 83, 45" },
-  cyan: { 50: "236, 254, 255", 500: "6, 182, 212", 600: "8, 145, 178", 800: "21, 94, 117", 900: "22, 78, 99" },
-  blue: { 50: "239, 246, 255", 500: "59, 130, 246", 600: "37, 99, 235", 800: "30, 64, 175", 900: "30, 58, 138" },
-  indigo: { 50: "238, 242, 255", 500: "99, 102, 241", 600: "79, 70, 229", 800: "55, 48, 163", 900: "49, 46, 129" },
-  purple: { 50: "250, 245, 255", 500: "168, 85, 247", 600: "147, 51, 234", 800: "107, 33, 168", 900: "88, 28, 135" },
-  pink: { 50: "253, 242, 248", 500: "236, 72, 153", 600: "219, 39, 119", 800: "157, 23, 77", 900: "131, 24, 67" },
+  red: { 50: "254, 242, 242", 400: "248, 113, 113", 500: "239, 68, 68", 600: "220, 38, 38", 800: "153, 27, 27", 900: "127, 29, 29" },
+  orange: { 50: "255, 247, 237", 400: "251, 146, 60", 500: "249, 115, 22", 600: "234, 88, 12", 800: "154, 52, 18", 900: "124, 45, 18" },
+  yellow: { 50: "254, 252, 232", 400: "250, 204, 21", 500: "245, 158, 11", 600: "217, 119, 6", 800: "146, 64, 14", 900: "120, 53, 15" },
+  green: { 50: "240, 253, 244", 400: "74, 222, 128", 500: "34, 197, 94", 600: "22, 163, 74", 800: "22, 101, 52", 900: "20, 83, 45" },
+  cyan: { 50: "236, 254, 255", 400: "34, 211, 238", 500: "6, 182, 212", 600: "8, 145, 178", 800: "21, 94, 117", 900: "22, 78, 99" },
+  blue: { 50: "239, 246, 255", 400: "96, 165, 250", 500: "59, 130, 246", 600: "37, 99, 235", 800: "30, 64, 175", 900: "30, 58, 138" },
+  indigo: { 50: "238, 242, 255", 400: "129, 140, 248", 500: "99, 102, 241", 600: "79, 70, 229", 800: "55, 48, 163", 900: "49, 46, 129" },
+  purple: { 50: "250, 245, 255", 400: "196, 181, 253", 500: "168, 85, 247", 600: "147, 51, 234", 800: "107, 33, 168", 900: "88, 28, 135" },
+  pink: { 50: "253, 242, 248", 400: "244, 114, 182", 500: "236, 72, 153", 600: "219, 39, 119", 800: "157, 23, 77", 900: "131, 24, 67" },
 } as const;
 
 interface ColorPickerProps {
@@ -55,29 +55,28 @@ function updateCSSVariables(primaryColor: string, complementaryColor: string) {
   const isDark = document.documentElement.classList.contains('dark');
   
   if (isDark) {
-    // Dark mode
-    root.style.setProperty('--primary', `rgb(${primaryColors[600]})`);
-    root.style.setProperty('--accent', `rgb(${primaryColors[600]})`);
-    root.style.setProperty('--sidebar-accent', `rgb(${primaryColors[600]})`);
-    root.style.setProperty('--user-bubble-border', `rgb(${primaryColors[600]})`);
+    // Dark mode - use lighter colors for better contrast on black
+    root.style.setProperty('--primary', `rgb(${primaryColors[400]})`);
+    root.style.setProperty('--accent', `rgb(${primaryColors[400]})`);
+    root.style.setProperty('--sidebar-accent', `rgb(${primaryColors[400]})`);
+    root.style.setProperty('--user-bubble-border', `rgb(${primaryColors[400]})`);
+    root.style.setProperty('--assistant-bubble-border', `rgb(${complementaryColors[400]})`);
     
     // Dark mode bubble backgrounds (reduced opacity for more transparency)
     root.style.setProperty('--user-bubble', `rgba(${primaryColors[900]}, 0.7)`);
     root.style.setProperty('--assistant-bubble', `rgba(${complementaryColors[800]}, 0.7)`);
   } else {
-    // Light mode
-    root.style.setProperty('--primary', `rgb(${primaryColors[500]})`);
-    root.style.setProperty('--accent', `rgb(${primaryColors[500]})`);
-    root.style.setProperty('--sidebar-accent', `rgb(${primaryColors[500]})`);
-    root.style.setProperty('--user-bubble-border', `rgb(${primaryColors[500]})`);
+    // Light mode - use darker colors for better contrast on white
+    root.style.setProperty('--primary', `rgb(${primaryColors[600]})`);
+    root.style.setProperty('--accent', `rgb(${primaryColors[600]})`);
+    root.style.setProperty('--sidebar-accent', `rgb(${primaryColors[600]})`);
+    root.style.setProperty('--user-bubble-border', `rgb(${primaryColors[600]})`);
+    root.style.setProperty('--assistant-bubble-border', `rgb(${complementaryColors[600]})`);
     
     // Light mode bubble backgrounds (reduced opacity for more transparency)
     root.style.setProperty('--user-bubble', `rgba(${primaryColors[50]}, 0.6)`);
     root.style.setProperty('--assistant-bubble', `rgba(${complementaryColors[50]}, 0.6)`);
   }
-  
-  // Update complementary colors (same for both modes)
-  root.style.setProperty('--assistant-bubble-border', `rgb(${complementaryColors[500]})`);
 }
 
 export function ColorPicker({ value = "#a855f7", onChange, label = "Color", description }: ColorPickerProps) {

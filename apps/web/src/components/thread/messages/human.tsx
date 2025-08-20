@@ -112,11 +112,11 @@ export function HumanMessage({
   if (isEditing) {
     return (
       <div className={cn("flex flex-col items-end ml-auto gap-1 group ml-8 w-full max-w-xl")}>
-        {/* User pill and timestamp for editing mode */}
+        {/* User pill with timestamp for editing mode */}
         <div className="flex items-center gap-2">
-          <span className="text-xs text-muted-foreground text-shadow-glow">{timestamp}</span>
-          <div className="inline-flex items-center px-2 py-1 rounded-full border-2 border-user-bubble-border bg-user-bubble">
-            <span className="text-xs font-medium text-foreground">user</span>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white dark:bg-black border border-border">
+            <span className="text-xs font-medium" style={{ color: 'var(--user-bubble-border)' }}>user</span>
+            <span className="text-xs text-muted-foreground/70">{timestamp}</span>
           </div>
         </div>
         
