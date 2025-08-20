@@ -7,12 +7,17 @@
   ],
   "scripts": {
     "dev": "concurrently --names \"WEB,LLM\" --prefix-colors \"cyan,magenta\" \"turbo dev --filter=web\" \"turbo dev --filter=agents\"",
+    "dev:web": "turbo dev --filter=web",
+    "dev:agents": "turbo dev --filter=agents",
     "build": "turbo build",
     "typecheck": "turbo typecheck",
     "turbo:command": "turbo",
     "format": "turbo format",
     "lint": "turbo lint",
-    "lint:fix": "turbo lint:fix"
+    "lint:fix": "turbo lint:fix",
+    "ios:sim": "npm run ios:sim --workspace=web",
+    "android:sim": "npm run android:sim --workspace=web", 
+    "ios:device": "npm run ios:device --workspace=web"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.0",
