@@ -37,7 +37,7 @@ export default function SiteMenu() {
     <>
       <div className="hidden lg:flex flex-col border-r-[1px] border-slate-300 items-start justify-start gap-6 h-screen w-[300px] shrink-0 shadow-inner-right">
         <div className="flex flex-col w-full">
-          <div className="flex items-center justify-between w-full pt-safe px-safe pb-4">
+          <div className="flex items-center justify-between w-full app-padding-top app-padding-x pb-4">
             <div className="flex items-center">
               <TooltipIconButton
                 tooltip="Close sidebar"
@@ -74,7 +74,7 @@ export default function SiteMenu() {
         >
           <SheetContent side="left" className="lg:hidden flex [&>button]:hidden">
             <div className="flex flex-col w-full h-full">
-              <div className="flex items-center justify-between w-full pt-safe px-safe pb-4">
+              <div className="flex items-center justify-between w-full app-padding-top app-padding-x pb-4">
                 <div className="flex items-center">
                   <TooltipIconButton
                     tooltip="Close sidebar"

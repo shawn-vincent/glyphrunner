@@ -5,6 +5,40 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Centralized safe area + padding utilities */
+@utility app-padding-x {
+  padding-left: max(env(safe-area-inset-left), 1rem);
+  padding-right: max(env(safe-area-inset-right), 1rem);
+}
+
+@utility app-padding-y {
+  padding-top: max(env(safe-area-inset-top), 1rem);
+  padding-bottom: max(env(safe-area-inset-bottom), 1rem);
+}
+
+@utility app-padding-top {
+  padding-top: max(env(safe-area-inset-top), 1rem);
+}
+
+@utility app-padding-bottom {
+  padding-bottom: max(env(safe-area-inset-bottom), 1rem);
+}
+
+@utility app-padding-left {
+  padding-left: max(env(safe-area-inset-left), 1rem);
+}
+
+@utility app-padding-right {
+  padding-right: max(env(safe-area-inset-right), 1rem);
+}
+
+@utility app-padding {
+  padding-top: max(env(safe-area-inset-top), 1rem);
+  padding-right: max(env(safe-area-inset-right), 1rem);
+  padding-bottom: max(env(safe-area-inset-bottom), 1rem);
+  padding-left: max(env(safe-area-inset-left), 1rem);
+}
+
 :root {
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);

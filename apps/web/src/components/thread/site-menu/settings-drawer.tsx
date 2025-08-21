@@ -96,7 +96,7 @@ export function SettingsDrawer({ isOpen, onClose }: SettingsDrawerProps) {
       <div className="fixed inset-0 z-[101] bg-background shadow-lg">
         <div className="flex flex-col h-full">
           {/* Header */}
-          <div className="flex items-center justify-between p-4 pt-safe px-safe border-b">
+          <div className="flex items-center justify-between p-4 app-padding-top app-padding-x border-b">
             <h2 className="text-xl font-semibold">Settings</h2>
             <TooltipIconButton
               tooltip="Close settings"
@@ -108,7 +108,7 @@ export function SettingsDrawer({ isOpen, onClose }: SettingsDrawerProps) {
           </div>
           
           {/* Content */}
-          <div className="flex-1 overflow-y-auto p-4 px-safe pb-safe">
+          <div className="flex-1 overflow-y-auto p-4 app-padding-x app-padding-bottom">
             <div className="space-y-6 max-w-2xl">
               {/* Theme Setting */}
               <div className="space-y-2">
