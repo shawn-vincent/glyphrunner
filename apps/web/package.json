@@ -16,7 +16,7 @@
     "cap:copy": "npm run build && npx cap copy",
     "ios:sim": "npm run cap:sync && npx cap run ios",
     "android:sim": "npm run cap:sync && npx cap run android",
-    "ios:device": "npm run cap:sync && npx cap run ios --target"
+    "ios:deploy": "./bin/deploy-iphone.sh"
   },
   "dependencies": {
     "@capacitor/android": "^7.4.2",

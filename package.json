@@ -17,7 +17,7 @@
     "lint:fix": "turbo lint:fix",
     "ios:sim": "npm run ios:sim --workspace=web",
     "android:sim": "npm run android:sim --workspace=web", 
-    "ios:device": "npm run ios:device --workspace=web"
+    "ios:deploy": "npm run ios:deploy --workspace=web"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.0",
